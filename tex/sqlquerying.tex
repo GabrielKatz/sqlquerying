@@ -1,0 +1,67 @@
+\documentclass[12pt,a4paper]{report}
+
+\setlength{\topmargin}{0 cm}
+\usepackage{times}
+\usepackage{float}
+\usepackage{rotating}
+\usepackage[german]{babel}
+\usepackage{graphics}
+\graphicspath{ {../img/} }
+\usepackage[table,dvipsnames]{xcolor}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{ntheorem}
+\usepackage{pifont}
+\theoremstyle{break}
+\theorembodyfont{\normalfont}
+\theoremprework{\bigskip\hrule\leavevmode\nopagebreak}
+\theorempostwork{\nopagebreak\hrule\leavevmode}
+\newtheorem{exercise}{Aufgabe}[chapter]
+\theoremstyle{plain}
+\theoremprework{\bigskip\hrule\leavevmode\nopagebreak}
+\theorempostwork{\nopagebreak\hrule\leavevmode}
+\newtheorem{proof}{Satz}[chapter]
+\renewcommand{\labelenumii}{\arabic{enumi}.\arabic{enumii}.}
+\newcommand{\algostep}[2]{\noindent\parbox{4cm}{\scalebox{0.5}{\includegraphics{#1}}}
+  \hfill
+  \parbox{7cm}{#2}
+  \vskip -5mm
+}
+\newcommand{\ucl}{\ding{56}}
+\newcommand{\ign}{\rowcolor[gray]{0.5}}
+\newcommand{\usd}[1]{{\cellcolor{SkyBlue}#1}}
+\newcommand{\sel}[1]{{\cellcolor{LimeGreen}#1}}
+\newcommand{\byp}[1]{{\cellcolor{LimeGreen!10}#1}}
+\newcommand{\matrixstep}[2]{\noindent\parbox{6cm}{\scriptsize #1}
+  \hfill
+  \parbox{7cm}{\small #2}
+  \vskip 2mm
+}
+
+\title{Relationale Datenabfragen mit SQL}
+\author{Gabriel Katz}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\chapter{Einleitung}
+
+\section{Worum geht es hier?}
+\section{Relationale Datenbanken}
+\newpage
+\chapter{Relationale Datenbanken in SQL}
+\section{Relationale Datenbanken}
+\section{Datenbanken erstellen mit SQL}
+\subsection{Datentypen}
+\subsection{Modellierung}
+\chapter{Datenbankabfragen}
+\section{Aufbau einer SELECT-Abfragen}
+\section{WHERE-Bedingungen}
+\section{ORDER BY}
+\section{verschiedene JOINs}
+
+\chapter{Datenbankmanipulationen}
+\section{Einf\"{u}gen}
+\section{Updates}
+
+\end{document}
