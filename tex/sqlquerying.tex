@@ -7,6 +7,20 @@
 \usepackage{rotating}
 \usepackage[german]{babel}
 \usepackage{graphics}
+\usepackage{listings}
+\makeatletter
+\newcommand{\lstuppercase}{\uppercase\expandafter{\expandafter\lst@token
+                           \expandafter{\the\lst@token}}}
+\newcommand{\lstlowercase}{\lowercase\expandafter{\expandafter\lst@token
+                           \expandafter{\the\lst@token}}}
+\makeatother
+\lstdefinestyle{SQL}{basicstyle=\ttfamily,
+                        keywordstyle=\lstuppercase,
+                        emphstyle=\itshape,
+                        showstringspaces=false,
+                        numbers=left
+                        }
+                        
 \graphicspath{ {../img/} }
 \usepackage[table,dvipsnames]{xcolor}
 \usepackage{caption}
@@ -50,17 +64,25 @@
 \section{Worum geht es hier?}
 Eines der wichtigsten Zwecke von Computer ist die Speicherung von Daten. Wenn eine Menge von organisierten
 Informationen dauerhaft auf einem zentralen Computer gespeichert werden, und diese Daten leicht abgefragt, 
-erg\"{a}nzt, bearbeitet und gel\"{o}scht werden kann ist von einer \textbf{Datenbank} die Rede. Es gibt 
+erg\"{a}nzt, bearbeitet und gel\"{o}scht werden kann, ist von einer \textbf{Datenbank} die Rede. So ist zum Beispiel
+ein Notizblock (egal ob in Papierform oder in digitaler, wie zum Beispiel Notes oder OneNote) eine stark 
+eingeschr"ankte Datenbank. Um relevante Daten zu finden, muss man eventuell Seite f"ur Seite durchgehen. Beim 
+Notizblock aus Papier ist auch die "Uberarbeitung der Daten eingeschr"ankt, da man z.B. auf der Seite nur begrenzt
+Platz hat. Daher stellt sich die Frage, welche besser zum Bearbeiten geeigneten Wege es gibt, Daten auf dem Computer
+zu speichern.
+\iffalse
+Es gibt 
 verschiedene Arten von Datenbanken. Die relationalen Datenbanken werden wir im n\"{a}chsten Abschnitt 
-genauer betrachten. \textbf{Hierarchischen} Datenbanksystemen stammen noch von der Zeit vor den relationalen 
-Datenbanken. Dort sind die Daten in Baumstruktur abgelegt. Zur Zeit gibt es einen starken Trend zu sogenennten 
+genauer betrachten. \textbf{Hierarchische} Datenbanksysteme stammen noch von der Zeit vor den relationalen 
+Datenbanken. Dort sind die Daten in einer Baumstruktur abgelegt.  Zur Zeit gibt es einen starken Trend zu sogenennten 
 \textbf{NoSQL}-Datenbanken. Dies sind nichtrelationale Datenbanken, bei welchen die St\"{a}rken in der Verteilung 
 der Dateien und den Berechnungen auf verschiedene Rechner liegt. Es gibt verschiedene Arten, wie solche Daten 
 abgelegt werden k\"{o}nnen: Dokumentenorientiert, objektorientiert und Key-Value-Datenbanken sind die 
 verbreitetesten dieser Arten.
+\fi
 \section{Relationale Datenbanken}
 Das Konzept f\"{u}r relationale Datenbanken basiert auf einem Paper von Dr. E. F. Codd aus dem Jahre 1970 
-namens 'A Relational Model of Data for Large Shared Data Banks'. Dort schlug er vor, Daten in einer Menge von 
+namens ''A Relational Model of Data for Large Shared Data Banks''. Dort schlug er vor, Daten in einer Menge von 
 \textbf{Tabellen} darzustellen. Dies Tabellen haben einen Namen und mehrere \textbf{Spalten}. Eine Spalte einer 
 Tabelle ist durch seinen Namen, seinen Datentyp, und ob sie obligatorisch oder fakultativ ist, definiert. Datentypen 
 dr\"{u}cken aus, welche Art von Daten in der Spalte gespeichert werden kann. Beispielsweise hat eine Spalte, in 
@@ -95,7 +117,7 @@ nicht behandeln.\\
     \hline
     ServiceId (PK) & Name                      & Duration \\ \hline
     1              & Waschen, Schneiden        & 30:00    \\
-    2              & Waschen, Schneiden, Fönen & 45:00    \\
+    2              & Waschen, Schneiden, F"onen & 45:00    \\
     3              & T\"onen                     & 90:00    \\ \hline
     \end{tabular} 
     \caption{Service}
@@ -144,26 +166,213 @@ Was bedeutet es, wenn beim Eintrag mit der $BookingId$ 2 der $ServiceFK$ von 1 a
 Wieso k\"onnen die Spalten $ServiceId$ und $CustomerId$ keinen zusammengesetzten Prim\"arschl\"ussel f\"ur die 
 Tabelle $Booking$ bilden?
 \end{exercise}
- \begin{exercise}\label{ex:PkFk}
-Darf eine Spalte zugleich Fremdschl\"ussel und Primarschl\"ussel sein? Falls nein, wieso nicht? Falls ja, gebe ein Beispiel.
+
+Wir betrachten noch ein Beispiel f"ur eine Datenbank. Tabellen Tabellen~\ref{tbl:secondExampleStart} 
+bis~\ref{tbl:secondExampleEnd}  sind Teil einer Musikbibliotheksdatenbank. In diesem Beispiel kommt ein 
+zusammengesetzter Prim"arschl"ussel vor. Da der Track eines Albums durch das Album und der Tracknummer eindeutig 
+gegeben ist, und die Tracknummer und das Album sich nie mehr "andert, eignet sich diese Kombination hervorragend
+als zumsammengesetzten Prim"arschl"ussel.
+
+Ein weiteres h"aufiges Muster, dass bei relationalen Datenbanken vorkommt, ist bei der Genre-Tabelle zu finden. Wir sehen,
+dass die $ParentGenreFk$ die eigene Tabelle referenziert. Im Beispiel ist $Punk Rock$ ein Subgenre von $Rock$. Wir stellen 
+ausserdem fest, dass gewisse Genres einen $NULL$-eintrag beim Feld $ParentGenreFk$ haben. Dies ist die Notation, welche
+besagt, dass dieses Feld f"ur einen Eintrag nicht verwendet wird. Eine Zeile kann nur in den Spalten $NULL$-eintr"age haben,
+in welchem
+ \begin{exercise}\label{ex:NULL}
+K"onnte in der Spalte $AlbumFk$ der Tabelle $Track$ ein $NULL$-eintrag stehen? Wieso bzw. wieso nicht?
 \end{exercise}
- \begin{exercise}\label{ex:selfReference}
-Darf ein Fremdschl\"ussel die eigene Tabelle referenzieren?
-\end{exercise}
+\begin{table}
+    \begin{tabular}{|llll|}
+    \hline
+    AlbumId (PK) & ArtistName & AlbumName  &   GenreFk  (FK)        \\ \hline
+    1               & Red Hot Chilli Peppers      & Californication & 1 \\
+    2               & The Ramones      & Rocket To Russia  & 2\\
+    3               & The Beastie Boys & Ill Communication & 3\\ \hline
+    \end{tabular}
+
+    \caption{Album}
+    \label{tbl:secondExampleStart}
+	\begin{tabular}{|llll|}
+    \hline
+    AlbumFk (PK, FK) & TrackId   (PK)  & Name & Duration \\ \hline
+    3		& 1 & Sure Shot       & 3:20    \\
+    1		& 1 & Around the World       & 3:59    \\
+    2       	& 2 & Rockaway Beach  &  2:07    \\
+    1         	& 4 & Otherside        & 4:15    \\ \hline
+    \end{tabular} 
+    \caption{Track}
+    \label{tbl:tracks}
+    \begin{tabular}{|lll|}
+    \hline
+    GenreId(PK) &ParentGenreFk (FK) & Name        \\ \hline
+    1 &NULL                  & Rock \\
+    2 &1                  & Punk Rock \\
+    3 & NULL  & Hip-Hop\\ \hline
+    \end{tabular}
+    \caption {Genre}
+    \label{tbl:secondExampleEnd}
+\end{table}
+
 \newpage
 \chapter{Relationale Datenbanken in SQL}
-\section{Relationale Datenbanken}
-\section{Datenbanken erstellen mit SQL}
-\subsection{Datentypen}
-\subsection{Modellierung}
+\section{Was ist SQL?}
+Dr. E. F. Codd, der wie im letzten Kapitel beschrieben die relationale Datenbanken erfunden hat, hat auch eine Sprache 
+namens DSL/Alpha entwickelt, um Daten in relationellen Tabellen zu bearbeiten. Nach einigen Weiterentwicklungen durch 
+Donald D. Chamberlin und Raymond F. Boyce bei IBM Research entstand dann die Sprache SEQUEL (kurz f"ur Standard 
+English Query Language), welche dann aus markenrechtlichen Gr"unden in SQL umbenannt werden musste. SQL ist seit 
+1986 von ANSI (American National Standard Institute) standardisiert, und dieser Standard wurde regelm"assig aktualisiert, 
+so dass heutzutage auch zum Beispiel die Integration und Abfrage von XML in SQL-Datenbanken standardisiert ist.
+
+Im Gegensatz zu C, C\#, Javascript oder Java ist SQL keine Allzwecksprache. Sie dient lediglich der Bearbeitung und Abfrage
+von Relationen Daten. Mit SQL werden lediglich notwendige Ein- und Ausgaben beschrieben. Wie die Daten gespeichert, bzw.
+wiedergegeben werden, ist Aufgabe der Datenbankengine. Diese optimiert die Ausf"uhrung der Datenbankabfrage, so dass 
+die Daten m"oglichst effizient abgefragt werden.
+
+SQL an sich ist keine vollst"andige Programmiersprache. Es gibt jedoch verschieden Erweiterungen, wie PL/SQL von Oracle,
+MySQL oder T-SQL von Microsoft, durch welche prozedural mit SQL gearbeitet werden kann. Viele
+Datenbankanwendungen werden aber nicht direkt mit SQL entwickelt, sondern mit einem Toolkit oder einer API aus einer 
+Allzwecksprache heraus. Beispiele daf"ur sind JDBC f"ur Java oder das Entity Framework f"ur C\# und Visual Basic. 
+\section{Datentypen}
+In SQL gibt es, "ahnlich wie in Programmiersprachen, verschiedene Datentypen. Es gibt eine Vielzahl von komplexeren Datentypen,
+welche f"ur spezifische Zwecke, wie zum Beispiel f"ur Bilder und XML-Dateien existieren. Doch da wir uns vor allem f"ur die
+Datenabfrage interessieren, richten wir unseren Fokus auf drei verschiedene Arten von Datentypen: Zahlwerte, temporale Daten und
+Zeichenketten.  
+
+\subsection{Zahlwerte}
+Ein \textbf{BIT} kann nur entweder 0 (false) oder 1 (true) sein. Dieser Datentyp ist ideal f"ur Antworten auf Ja/Nein-Fragen, welche nicht
+nur in der Informatik h"affig auftreten.
+Ein \textbf{INT} ist eine Ganzzahl. Es gibt verschiedene Variationen davon f"ur verschiedene gr"ossen (\textbf{SMALLINT}, \textbf{BIGINT}, etc.),
+doch das Grundprinzip ist das Gleiche. In den vorhergehenden Beispielen wurden $INT$s vor allem f"ur Schl"ussel verwendet.
+Ein \textbf{FLOAT} ist eine Gleitkommazahl. Dies heisst, dass diese Zahl fast beliebig gross oder klein sein kann.
+Ein \textbf{DECIMAL(p,s)} ist eine Zahl mit $p$ Ziffern insgesamt, davon $s$ nach dem Komma. Dies heisst, dass z.B. $41.46$ als 
+\textbf{DECIMAL(4,2)} gespeichert werden kann, jedoch wird $31.8734$ auf $31.87$ gerundet, und Werte "uber $99.99$ k"onnten gar
+nicht erst gespeichert werden. $DECIMAL$ wird h"aufig f"ur finanzielle Daten (Kosten, Preise, etc.) verwendet. 
+\subsection{Temporale Daten}
+\textbf{DATE} ist der Datentyp f"ur ein Datum ohne Zeitangaben.\\
+\textbf{TIME} ist der Datentyp f"ur eine Zeit ohne Datumsangaben.\\
+\textbf{DATETIME} ist der Datentyp f"ur eine Kombination der beiden obigen.
+
+Leider gibt es f"ur eine Zeitdauer keinen einheitlichen Datentyp. Eine m"oglichkeit ist es, da"ur \textbf{TIME} zu nehmen. Doch daf"ur muss die
+Zeitdauer kleiner als 24 Stunden sein. Anstatt dessen kann man sonst einen Zahlwert nehmen, und die Zahleneinheit am Besten gleich im
+Spaltennamen der Tabelle erw"ahnen, damit er nicht vergessen wird. Bei der Tabelle~\ref{tbl:tracks} zum Beispiel kann man die Spalte 
+$Duration$ in $DurationSeconds$ umbenennen, und die Werte dann z.B. als \textbf{INT}-Werte speichern (falls einem die Sekundenbruchteile
+nicht interessieren).
+\subsection{Zeichenketten}
+F"ur Zeichenketten gibt es zwei verschiedene Formate:
+\textbf{CHAR(l)} ist eine Zeichenkette mit fixer L"ange $l$.\\
+\textbf{VARCHAR(l)} ist eine Zeichenkette mit h"ochstl"ange $l$.\\
+Wenn man bei einem Feld die H"ochstl"ange nicht kennt, kann man auch f"ur $l$ anstatt eines Zahlenwertes den Ausdruck $max$ nehmen.
+Dies kann jedoch bei Textsuchen die Abfrageeffizienz beeintr"achtzigen.
+\begin{exercise}
+An sich k"onnte man jedes der vorgestellten Datentypen in ein \textbf{VARCHAR(max)} schreiben. Wieso verwendet man dann nicht immer 
+\textbf{VARCHAR(max)}? 
+\end{exercise}
+\begin{exercise}
+Bestimme die Datentypen der Beispiele aus dem vorhergehenden Kapitel.
+\end{exercise}
+\section{Datenbanken erstellen in SQL}
+Mit dem Wissen, das wir uns in den letzten Kapitel angeeignet haben, ist es relativ einfach, eine Datenbank mit SQL zu erstellen. Folgendes
+Beispiel erstellt die Tabelle Booking von~\ref{tbl:firstExampleEnd}.
+\begin{lstlisting}[frame=single, language=SQL, style=SQL]  
+CREATE TABLE Booking (
+	BookingId INT NOT NULL,
+	ServiceFk INT NOT NULL,
+	CustomerFk INT,
+	StartDate DATETIME NOT NULL,
+	CONSTRAINT pk_booking PRIMARY KEY (BookingId),
+	CONSTRAINT fk_service FOREIGN KEY (ServiceFk) 
+		REFERENCES Service(ServiceId),
+	CONSTRAINT fk_customer FOREIGN KEY 
+		(CustomerFk) 
+		REFERENCES Customer(CustomerKey)
+	
+);
+\end{lstlisting}
+Die erste Zeile beschreibt, was wir tun wollen, n"amlich eine Tabelle erstellen. Die folgenden Felder sind die Spalten der Tabelle. Zuerst wird
+jeweils der Name der Spalte geschrieben, dann der Datentyp. Wenn eine Spalte nicht leer sein darf, dann wird dies mit NOT NULL
+gekennzeichnet. In unserem Beispiel d"urfen auch Buchungen get"atigt werden, bei welchen der Kunde fehlt, da er zum Beispiel nicht 
+bekannt ist. Prim"arschl"ussel und Fremdschl"ussel werden mit dem CONSTRAINT-Keyword erstellt. Solche Constraints erhalten einen Namen,
+damit man sie sp"ater auch noch modifizieren oder l"oschen kann. Die Namen pk\_booking, fk\_service und fk\_customer stammen aus
+Konventionen, wenn man m"ochte, kann man Constraints beliebig nennen. Auf den Namen folgt die Art des Constraints. In dieser Lektion 
+werden nur die Contraints ''Primary Key'' und ''Secondary Key'' behandelt. Nach der Art des schl"ussels wird deklariert, auf welche Spalten der
+Constraint wirkt. Alle Constraints, welche wir hier eignef"ugt haben, gelten nur f"ur eine einzelne Spalte.
+Zeilen 7 bis 12 besch"aftigen sich mit den Fremdschl"ussel. Zus"atzlich zur Information, welche Spalte teil des Schl"ussels ist, wird auch noch
+beschrieben, welche Spalten welcher Tabelle referenziert werden.
+
+Hier noch ein Beispiel, wie die Tabelle ~\ref{tbl:tracks}  in SQL aussieht:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL]  
+CREATE TABLE Track (
+	AlbumFk INT NOT NULL,
+	TrackId INT NOT NULL,
+	Name NVARCHAR(200),
+	DurationSeconds INT NOT NULL,
+	CONSTRAINT pk_track PRIMARY KEY 
+		(AlbumFK, TrackId)
+	CONSTRAINT fk_album FOREIGN KEY (AlbumFk)
+		REFERENCES Album(AlbumKey)
+);
+\end{lstlisting}
+\begin{exercise}
+Erstelle die anderen vier Tabellen dieses Kapitels in SQL.
+\end{exercise}
+\section{Daten einsetzen}
+Eine Datenbank abzufragen macht erst Sinn, wenn Daten drin sind. Dies geschieht mit dem INSERT INTO-Statement. Dieses Statement besteht aus zwei Teilen.
+Im ersten Teil wird angegeben, in welche Spalten welcher Tabelle Werte eingesetzt werden. Im zweiten-Teil, nach dem VALUES-Keyword, werden die 
+Werte eigesetzt. Das Ganze sieht zum Beispiel f"ur die Booking-Tabelle so aus:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL]  
+INSERT INTO Booking 
+	(BookingKey, ServiceFk, CustomerFk, StartDate)
+VALUES (4, 1, 3, '21.11.2014 10:30')
+\end{lstlisting}
+In diesem Beispiel sehen wir auch, wie wir in SQL mit Datentypen umgehen m"ussen: Zahlenwerte schreiben wir ganz gew"ohnlich aus. Alle
+anderen Datentypen, also Zeitdaten und Zeichenketten schreiben wir mit Hochkommas.  
+\begin{exercise}
+F"uge in jede der 5 anderen Tabellen einen weiteren Datensatz ein. 
+\end{exercise}
 \chapter{Datenbankabfragen}
 \section{Aufbau einer SELECT-Abfragen}
+Jetzt dass wir wissen, wie wir unsere Datenbanken erstellen und Daten ein"ugen, k"onnen wir anfangen, Daten abzufragen. Daf"ur verwendet man das SELECT-Keyword. die einfachste Datenabfrage sieht wie folgt aus:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL]  
+SELECT *
+FROM Track
+\end{lstlisting}
+Eine SQL-Abfrage in der Datenbank gibt immer eine Tabelle zur"uck. Diese Datenbankabfrage gibt uns die ganze Tabelle Track zur"uck. Nach dem SELECT-Keyword muss man eingeben, welche Daten man 
+im Resultat erhalten m"ochte. * steht f"ur s"amtliche Spalten. Nach dem FROM steht, von welcher Tabelle man die Felder nehmen will. Wenn
+wir zum Beispiel nur die Spalten Name und Duration br"auchten, s"ahe die Abfrage wie folgt aus:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL]  
+SELECT Name, Duration
+FROM Track
+\end{lstlisting}
+Da der Zweck von SQL ist, Daten "uber mehrere Tabellen abzufragen, ist es oft praktisch, Tabellen in den Abfragen einen neuen Namen zu geben. 
+Dann kann es auch n"otig sein, Spalten zusammenzufassen, denn wenn mehrere Tabellen zusammengefasst werden, kann es vorkommen, 
+dass gewisse Spalten gleich heissen. Dieses Beispiel macht das gleiche wie das letzte, die Tabelle Track wird jedoch t genannt, und die Track-Spalte
+wird zu Trackname umbenannt. 
+\begin{lstlisting}[frame=single, language=SQL, style=SQL]  
+SELECT t.Name as Trackname, t.Duration
+FROM Track t
+\end{lstlisting} 
+Bei SELECT-Abfragen k"onnen nicht nur Spalten aus der Tabelle, sondern auch Konstanten oder berechnete Werte abgefragt werden. So gibt zum 
+Beispiel diese Abfrage eine Tabelle zur"uck, bei welcher alle Eintr"age den Status ''In Library'' haben. Weiter sind in der Tabelle die Spieldauer in
+Minuten und der Track-Name in Kleinbuchstaben aufgelistet:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL]  
+SELECT 'In Library' AS Status, 
+	LOWER(t.Name) as Trackname, 
+	t.DurationSeconds/60 AS DurationMinutes
+FROM Track t
+\end{lstlisting} 
+Weiter gibt es noch das Schl"usselwort DISTINCT zu erw"ahnen. mit diesem Schl"usselwort werden doppelte Eintr"age eliminiert. Beispielsweise 
+gibt uns diese Abfrage zur"uck, wieviel Minuten die Lieder in der Tabelle dauern.
+\begin{lstlisting}[frame=single, language=SQL, style=SQL]  
+SELECT DISTINCT t.DurationSeconds/60 AS DurationMinutes
+FROM Track t
+\end{lstlisting}
 \section{WHERE-Bedingungen}
 \section{ORDER BY}
+\section{Unterabfragen}
 \section{verschiedene JOINs}
 
 \chapter{Datenbankmanipulationen}
 \section{Einf\"{u}gen}
 \section{Updates}
-
+\chapter{L"osungen}
 \end{document}
