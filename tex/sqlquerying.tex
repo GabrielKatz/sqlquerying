@@ -8,6 +8,8 @@
 \usepackage[german]{babel}
 \usepackage{graphics}
 \usepackage{listings}
+\usepackage{hyperref}
+\usepackage{needspace}
 \makeatletter
 \newcommand{\lstuppercase}{\uppercase\expandafter{\expandafter\lst@token
                            \expandafter{\the\lst@token}}}
@@ -18,7 +20,7 @@
                         keywordstyle=\lstuppercase,
                         emphstyle=\itshape,
                         showstringspaces=false,
-                        numbers=left
+                        numbers=left,
                         }
                         
 \graphicspath{ {../img/} }
@@ -27,15 +29,12 @@
 \usepackage{subcaption}
 \usepackage{ntheorem}
 \usepackage{pifont}
-\theoremstyle{break}
-\theorembodyfont{\normalfont}
-\theoremprework{\bigskip\hrule\leavevmode\nopagebreak}
-\theorempostwork{\nopagebreak\hrule\leavevmode}
-\newtheorem{exercise}{Aufgabe}[chapter]
 \theoremstyle{plain}
-\theoremprework{\bigskip\hrule\leavevmode\nopagebreak}
-\theorempostwork{\nopagebreak\hrule\leavevmode}
-\newtheorem{proof}{Satz}[chapter]
+\theorembodyfont{\normalfont}
+\theoremprework{\bigskip\needspace{\baselineskip}\hrule}
+\theorempostwork{\needspace{\baselineskip}\hrule\bigskip}
+\newtheorem{exercise}{Aufgabe}[chapter]
+
 \renewcommand{\labelenumii}{\arabic{enumi}.\arabic{enumii}.}
 \newcommand{\algostep}[2]{\noindent\parbox{4cm}{\scalebox{0.5}{\includegraphics{#1}}}
   \hfill
@@ -70,19 +69,25 @@ eingeschr"ankte Datenbank. Um relevante Daten zu finden, muss man eventuell Seit
 Notizblock aus Papier ist auch die "Uberarbeitung der Daten eingeschr"ankt, da man z.B. auf der Seite nur begrenzt
 Platz hat. Daher stellt sich die Frage, welche besser zum Bearbeiten geeigneten Wege es gibt, Daten auf dem Computer
 zu speichern.
-\iffalse
-Es gibt 
-verschiedene Arten von Datenbanken. Die relationalen Datenbanken werden wir im n\"{a}chsten Abschnitt 
-genauer betrachten. \textbf{Hierarchische} Datenbanksysteme stammen noch von der Zeit vor den relationalen 
-Datenbanken. Dort sind die Daten in einer Baumstruktur abgelegt.  Zur Zeit gibt es einen starken Trend zu sogenennten 
-\textbf{NoSQL}-Datenbanken. Dies sind nichtrelationale Datenbanken, bei welchen die St\"{a}rken in der Verteilung 
-der Dateien und den Berechnungen auf verschiedene Rechner liegt. Es gibt verschiedene Arten, wie solche Daten 
-abgelegt werden k\"{o}nnen: Dokumentenorientiert, objektorientiert und Key-Value-Datenbanken sind die 
-verbreitetesten dieser Arten.
-\fi
+
+Die relationalen Datenbanken sind die wohl verbreitetste Art von Datenbanken. Was sie genau sind, werden wir im 
+n"achsten Abschnitt genauer betrachten. Zwar gibt es zur Zeit einen Trend zu anderen, sogenannten 
+NoSQL-Datenbanken, doch auch f"ur diese sind Kenntnisse in relationalen Datenbanken wichtig.
+Daher besuch"aftigen sich diese Unterlagen mit SQL, der Standardsprache in relationalen Datenbanken. Den Rest 
+dieses Kapitels werden wir mit den relationalen Datenbanken und deren Aufbau besch"aftigen. Kapitel 2 erkl"art was
+SQL ist, und zeigt, wie man eine Datenbank in SQL erstellt. Kapitel 3 ist das Kernkapitel dieser Unterlagen und erkl"art
+ausf"ehrlich, wie man Daten in SQL abfragt. Schliesslich sehen wir in Kapitel 4, wie man die Anfragetechniken verwendet,
+um Daten in SQL zu manipulieren.
+
+Wir arbeiten in dieser Unterrichtseinheit mit 3 verschiedenen Datenbankbeispiele. In den Kapitel selbst verwenden wir zwei
+minimale Datenbanken, welche nur 3 Tabellen beinhalten. Die Kapiteltests bearbeiten ein etwas gr"osseres Datenbankmodell.
+
+SQL verf"gut "uber sehr viele Funktionen, um mit den internen Datentypen zu transformieren. Beispielsweise gibt es viele
+Funktionen, um Zeitdaten zu vergleichen und zu berechnen. Da diese Unterlagen sich nicht als SQL-Referenz versteht, 
+werden solche Funktionen nur dann eingef"uhrt, wenn sie verwendet werden.
 \section{Relationale Datenbanken}
 Das Konzept f\"{u}r relationale Datenbanken basiert auf einem Paper von Dr. E. F. Codd aus dem Jahre 1970 
-namens ''A Relational Model of Data for Large Shared Data Banks''. Dort schlug er vor, Daten in einer Menge von 
+namens ``A Relational Model of Data for Large Shared Data Banks''. Dort schlug er vor, Daten in einer Menge von 
 \textbf{Tabellen} darzustellen. Dies Tabellen haben einen Namen und mehrere \textbf{Spalten}. Eine Spalte einer 
 Tabelle ist durch seinen Namen, seinen Datentyp, und ob sie obligatorisch oder fakultativ ist, definiert. Datentypen 
 dr\"{u}cken aus, welche Art von Daten in der Spalte gespeichert werden kann. Beispielsweise hat eine Spalte, in 
@@ -96,7 +101,8 @@ Eine Tabelle in einer relationalen Datenbank hat immer ein Merkmal, an welchem d
 identifiziert werden können. Dieses Merkmal wird \textbf{Prim\"arschl\"ussel (PK)} genannt. Dieser Prim\"arschl\"ussel 
 besteht h\"aufig aus einer einzelnen Tabellenspalte, doch er kann auch aus mehreren Tabellenspalten bestehen.
 In diesem Fall spricht man von einem \textbf{zusammengesetzten} Schl\"ussel. H\"aufig ist der Prim\"arschl\"ussel eine
-Spalte, welche nicht eigentliche Daten enth\"alt, sondern nur ein Kennzeichen.\\
+Spalte, welche nicht eigentliche Daten enth\"alt, sondern nur ein Kennzeichen. In den hier gezeigten Beispielen ist der 
+Prim\"arschl\"ussel fast immer ein Zahlwort, doch dies muss nicht immer so sein.\\
 Die Kernidee hinter den relationalen Datenbanken, ist, dass diese Tabellen verbunden sind. Doch wie sieht eine 
 derartige Verbindung aus? Hier kommen die sogenannten \textbf{Fremdschl\"ussel (FK)} ins Spiel. Ein Fremdschl\"ussel
 besteht aus einer oder mehreren Spalten einer Tabelle, welche den Prim\"arschl\"ussel einer anderen Tabelle 
@@ -127,7 +133,7 @@ nicht behandeln.\\
        (PK) &(FK(Service.ServiceId)) & (FK(Customer.CustomerId)) &  \\ \hline
     1 &1                  & 3                   & 21.11.2014 10:30 \\
     2 &1                  & 1                   & 24.11.2014 08:30 \\
-    3 & 3                  & 2                   & 23.11.2014 15:00 \\ \hline
+    3 & 3                  & 3                   & 23.11.2014 15:00 \\ \hline
     \end{tabular}
     \caption {Booking}
     \label{tbl:firstExampleEnd}
@@ -148,7 +154,7 @@ Mutabilit\"at der Daten entscheidet man meistens gegen derart komplexe Prim\"ars
 weitere Zeile ein.
 
 Bei der Tabelle $Service$ verh\"alt es sich gleich wie bei der $Customer$-Tabelle: Da die anderen Spalten sich \"andern 
-k\"onnen, und eventuell nicht eindeutig sind, wurde eine zus\"atzliche Spalte f\"ur den Prim\"rschl\"ussel eingef\"hrt,
+k\"onnen, und eventuell nicht eindeutig sind, wurde eine zus\"atzliche Spalte f\"ur den Prim\"arschl\"ussel eingef\"uhrt,
 
 Die $Booking$-Tabelle hat zwei Fremdschl\"ussel: Die Spalte $ServiceFk$ referenziert die Spalte $ServiceId$ der Tabelle 
 $Service$, und die Spalte $CustomerFk$ referenziert die Spalte $CustomerId$ der Tabelle $Customer$. Der erste Eintrag
@@ -213,8 +219,148 @@ K"onnte in der Spalte $AlbumFk$ der Tabelle $Track$ ein $NULL$-eintrag stehen? W
     \label{tbl:secondExampleEnd}
 \end{table}
 
-\newpage
+Die zwei Datenbanken, welche wir in diesem Kapitel betrachteten, werden uns im auch in den n"achsten Kapitel besch"aftigen, und
+alle "Ubungen bis auf die Schlusspr"ufung wird sich mit diesen Beispielen befassen. 
+Daher empfiehlt es sich, diese Tabellen beim Weiterlesen immer zur Seite zu haben.
+\section{Kapiteltest}
+In diesem Kapiteltest wird ein etwas Datenmodell eingef"uhrt, welches uns im Rest dieses Kapitels begleiten wird. In dieser Datenbank 
+werden Biere, deren Angebot in Bars, und deren Bestellungen von diversen Personen verwaltet. Tabellen~\ref{tbl:testStart} 
+bis~\ref{tbl:testEnd} zeigt die Daten dieses Systems. In der Tabelle Bar sind die Bars aufgelistet. Die Brauerei Tabelle listet die Brauereien
+im System, und die Kunden erscheinen in der Kunden Tabelle. Wenn eine Bar ein Bier im Sortiment hat, existiert ein entsprechenden Eintrag in
+der Sortiment-Tabelle mit dem entsprechenden Verkaufspreis. Eine Bestellung ist ein Eintrag in der Bestellungstabelle. Da jedoch die Bestellung mehrere 
+verschiedene Biere beinhalten kann, sind diese in einer separaten Tabelle vermerkt. Jede Bestellung kann mehrere verschiedene Bestellte Biere haben.
+Diese Tabelle verf"ugt "uber eine Anzahl bestellter Biere, damit nicht jedes einzelne Bier separat aufgelistet werden muss.
+
+\begin{table}
+    \begin{tabular}{|lll|}
+    \hline
+    BarId (PK) & Name & Adresse               \\ \hline
+    1               & Vollmond Taverne & Zentralstrasse 53\\
+    2               & Si o No  & Ankerstrasse 6\\
+    3               & Brasserie Federal   & Bahnhofplatz 15\\ \hline
+    \end{tabular}
+
+    \caption{Bar}
+    \label{tbl:testStart}
+    
+\begin{tabular}{|lll|}
+    \hline
+    BrauereiId (PK) & Name                      & Ort \\ \hline
+    1              & Appenzeller        & Appenzell    \\
+    2              & W"adi-Br"au & W"adenswil    \\
+    3              &Heineken & Amsterdam    \\
+    4              & Turbinenbr"au & Z"urich   \\ \hline
+    \end{tabular} 
+    \caption{Brauerei}
+    \begin{tabular}{|lllll|}
+    \hline
+    BierId &BrauereiFk &Name & Deziliter  & Einkaufpreis        \\ 
+       (PK) &(FK(Brauerei.BrauereiId)) & (FK(Customer.CustomerId)) & & \\ \hline
+    1 &1                  & Qu"ollfrisch                   & 5 & 1.30 \\
+    2 &1                  & Vollmond                   & 3.3 & 1.30 \\
+    3 & 1                  & Brandl"oscher     & 3.3& 1.20 \\ 
+    4 &2                  & Blond Premium & 3.3 & 1.50 \\
+    5 &2                  & Dunkel                   & 3.3 & 1.60 \\
+    6 & 3                  & Lager                   & 5 & 0.90 \\ 
+    7 &4                  & Sprint                   & 3.3 & 1.80 \\
+    8 &4                  & Start                   &  3.3 & 1.80 \\
+    9 & 4                  & Rekord                   &  3.3 & 1.80 \\ \hline
+    \end{tabular}
+    \caption {Bier}
+        \begin{tabular}{|lll|}
+    \hline
+    KundenId &Name & LieblingsbierFk        \\ 
+       (PK) & & (FK(Bier.BierId))  \\ \hline
+    1 &Lisa                  &6 \\
+    2 &Urs                  & NULL \\
+    3 & Heinz                  & 3 \\ 
+    4 & Andrea                 & NULL \\
+    \hline
+    \end{tabular}
+    \caption {Kunde}
+    \end{table} 
+    \begin{table}
+     \begin{tabular}{|lll|}
+    \hline
+    BarFk &BierFk & Preis        \\ 
+       (PK, FK(Bar.BarId) &(PK, FK(Bier.BierId)) & \\ \hline
+    1 &2                  & 4.00 \\
+    1 &1                  & 6.00 \\
+    1 & 3                  & 5.00 \\ 
+    1 &7                  & 5.00 \\
+    2 &4                  & 5.00 \\
+    2 & 7                  & 6.00 \\ 
+    2 & 8                  & 6.00 \\
+    2 & 9                  & 6.00 \\
+    3 & 6                  & 7.00 \\
+    3 & 5                  & 5.00 \\
+    3 & 4                  & 5.00 \\ 
+    3 & 1                  & 7.50 \\
+    3 & 2                  & 5.50 \\
+    3 & 7                  & 6.00 \\
+    3 & 8                  & 6.00 \\
+    
+     \hline
+    \end{tabular}
+    \caption{Sortiment}
+         \begin{tabular}{|llll|}
+    \hline
+    BestellungId &KundenId & BarId & Zeit        \\ 
+       (PK) &(FK(Kunde.KundenId)) & (FK(Bar.BarId)) &\\ \hline
+    1 &2                  & 1 & 31.12.2014 22:00\\
+    2 &1                  & 2 & 31.12.2014 23:23\\
+    3 & 1                  & 2 & 31.12.2014 23:24\\ 
+    4 &3                  & 2 & 31.12.2014 23:52\\
+    5 &4                  & 3 & 1.1.2015 01:21\\
+ 
+    
+     \hline
+    \end{tabular}
+    \caption {Bestellung}
+         \begin{tabular}{|lllll|}
+    \hline
+    BestellteBierId &BestellungFk & BarFk & BierFk & Anzahl        \\ 
+       (PK) &(FK(Bestellung.& (FK(Sortiment. & (FK(Sortiment.& \\ 
+              &BestellungId)) &BarFk)) &BierFk))& \\ \hline
+    1 &1&1&3&2\\
+    2 &2&1&1&1\\
+    3 & 2&1&3&2\\ 
+    4 & 3&1&7&1\\
+    5 &4 &2&7&3\\
+    6&4&2&4&1\\ 
+    7&5&3&1&3\\
+   8&5&3&6&1\\ 
+    
+     \hline
+    \end{tabular}
+    \caption{BestellteBier}
+    \label{tbl:testEnd}
+\end{table} 
+\begin{exercise}
+Wir versuchen am Anfang, die Daten zu verstehen. Erstelle eine Liste der Biere, welche die verschiedenen Kunden bestellt haben.
+\end{exercise}
+\begin{exercise}
+Zu wie viel mal dem Einkaufspreis wird das Vollmond-Bier in der Vollmond-Taverne ausgeschenkt?
+\end{exercise}
+\begin{exercise}
+Wie "andert sich die Datenbank, wenn Urs am 1. Januar 2015 um 2 Uhr im Federal noch zwei Sprint bestellt?
+\end{exercise}
+\begin{exercise}
+Die Tabelle Sortiment hat einen zusammengesetzten Prim"arschl"ussel. Was w"aren die Vor- und Nachteile, wenn wir hier auch ein zus"atzliches Feld
+f"ur den Prim"arschl"ussel einf"uhren w"urden?
+\end{exercise}
+\begin{exercise}
+Wieso referenziert in der Tabelle BestellteBier die Spalte BarFk die Spalte BarFk aus der Tabelle Sortiment, und nicht die Spalte BarId aus
+der Tabelle Bar
+\end{exercise}
+\begin{exercise}
+Gibt es in der Tabelle BestellteBier einen andere M"oglichkeit f"ur den Prim"arschl"ussel, als die Id-Spalte einzuf"uhren? 
+\end{exercise}
+
 \chapter{Relationale Datenbanken in SQL}
+In diesem Kapitel lernen wir endlich SQL etwas n"aher kennen. Ziel des Kapitels ist es, dass wir die Beispieltabellen in SQL erstellen
+k"onnen. Daf"ur untersuchen wir zuerst, was SQL genau ist, dann lernen wir die wichtigsten Datentypen von SQL kennen.
+Anschliessend sind wir bereit, das Datenmodell in SQL zu erstellen, in welches wir dan schliesslich die Daten einf"ugen.
 \section{Was ist SQL?}
 Dr. E. F. Codd, der wie im letzten Kapitel beschrieben die relationale Datenbanken erfunden hat, hat auch eine Sprache 
 namens DSL/Alpha entwickelt, um Daten in relationellen Tabellen zu bearbeiten. Nach einigen Weiterentwicklungen durch 
@@ -228,10 +374,31 @@ von Relationen Daten. Mit SQL werden lediglich notwendige Ein- und Ausgaben besc
 wiedergegeben werden, ist Aufgabe der Datenbankengine. Diese optimiert die Ausf"uhrung der Datenbankabfrage, so dass 
 die Daten m"oglichst effizient abgefragt werden.
 
-SQL an sich ist keine vollst"andige Programmiersprache. Es gibt jedoch verschieden Erweiterungen, wie PL/SQL von Oracle,
-MySQL oder T-SQL von Microsoft, durch welche prozedural mit SQL gearbeitet werden kann. Viele
-Datenbankanwendungen werden aber nicht direkt mit SQL entwickelt, sondern mit einem Toolkit oder einer API aus einer 
-Allzwecksprache heraus. Beispiele daf"ur sind JDBC f"ur Java oder das Entity Framework f"ur C\# und Visual Basic. 
+Eine Software, welche sich umf"anglich mit der Bewirtschaftung von relationalen Datenbanken befasst, nennt sich RDBMS, kurz
+f"ur Relational Database Management System. Alle g"angigen RDBMS verwenden SQL oder eine Erweiterung von SQL. Die 
+g"angigsten RDBMS-Systeme sind:
+
+\begin{itemize}
+\item MySQL, ein Open-Source-System, welches eher wenig Erweiterungen zu SQL verwendet
+\item SQL Server von Microsoft. Die SQL-Erweiterung, welche hier verwendet wird, nennt sich T-SQL.
+\item Oracle von der gleichnamigen Firma. Die Erweiterte Sprache, welche in Oracle verwendet wird, heisst PL/SQL.
+\item SQLite, ein sehr schlankes Open-Source-DBMS. SQLite ist so leicht, dass einige Webbrowser (Safari, Chrome und Opera)
+"uber ein eingebautes SQLite verf"ugen.
+\item PostgreSQL
+\end{itemize}
+
+SQL an sich ist keine vollst"andige Programmiersprache. Viele erweiterte Versionen von SQL, wie PL/SQL,
+MySQL oder T-SQL sind jedoch zumindest theoretisch vollst"andige Programmiersprachen. (F"ur die Informatikexperten:
+SQL alleine ist nicht Turing-komplett, MySQL, T-SQL, etc. hingegen schon.) Es ist jedoch nicht praktikabel, Datenbankunabh"angige
+Anwendungen mit diesen Erweiterungen zu entwickeln. Viele Datenbankanwendungen werden aber nicht direkt mit SQL 
+entwickelt, sondern mit einem Toolkit oder einer API aus einer 
+Allzwecksprache heraus. Beispiele daf"ur sind JDBC f"ur Java oder das Entity Framework f"ur C\# und Visual Basic.
+
+Man kann SQL ohne irgendetwas zu installieren auf dem Web ausprobieren. Auf 
+\url{http://www.w3schools.com/sql/trysql.asp?filename=trysql_select_all} kann man die Webbrowser-interne Datenbankengine
+ansteuern. Um die Daten bearbeiten zu k"onnen, muss die Seite jedoch mit Chrome, Opera oder Safari aufgerufen werden,
+da die anderen Browser Web-SQL nicht unterst"utzen. Ansonsten kann man auf \url{http://sqlfiddle.com/} mit vielen
+verschiedenen Datenbankengines herumexperimentieren.
 \section{Datentypen}
 In SQL gibt es, "ahnlich wie in Programmiersprachen, verschiedene Datentypen. Es gibt eine Vielzahl von komplexeren Datentypen,
 welche f"ur spezifische Zwecke, wie zum Beispiel f"ur Bilder und XML-Dateien existieren. Doch da wir uns vor allem f"ur die
@@ -273,7 +440,7 @@ Bestimme die Datentypen der Beispiele aus dem vorhergehenden Kapitel.
 \section{Datenbanken erstellen in SQL}
 Mit dem Wissen, das wir uns in den letzten Kapitel angeeignet haben, ist es relativ einfach, eine Datenbank mit SQL zu erstellen. Folgendes
 Beispiel erstellt die Tabelle Booking von~\ref{tbl:firstExampleEnd}.
-\begin{lstlisting}[frame=single, language=SQL, style=SQL]  
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Erstellen der Tabelle Booking}]  
 CREATE TABLE Booking (
 	BookingId INT NOT NULL,
 	ServiceFk INT NOT NULL,
@@ -294,13 +461,13 @@ gekennzeichnet. In unserem Beispiel d"urfen auch Buchungen get"atigt werden, bei
 bekannt ist. Prim"arschl"ussel und Fremdschl"ussel werden mit dem CONSTRAINT-Keyword erstellt. Solche Constraints erhalten einen Namen,
 damit man sie sp"ater auch noch modifizieren oder l"oschen kann. Die Namen pk\_booking, fk\_service und fk\_customer stammen aus
 Konventionen, wenn man m"ochte, kann man Constraints beliebig nennen. Auf den Namen folgt die Art des Constraints. In dieser Lektion 
-werden nur die Contraints ''Primary Key'' und ''Secondary Key'' behandelt. Nach der Art des schl"ussels wird deklariert, auf welche Spalten der
+werden nur die Contraints ``Primary Key'' und ``Secondary Key'' behandelt. Nach der Art des schl"ussels wird deklariert, auf welche Spalten der
 Constraint wirkt. Alle Constraints, welche wir hier eignef"ugt haben, gelten nur f"ur eine einzelne Spalte.
 Zeilen 7 bis 12 besch"aftigen sich mit den Fremdschl"ussel. Zus"atzlich zur Information, welche Spalte teil des Schl"ussels ist, wird auch noch
 beschrieben, welche Spalten welcher Tabelle referenziert werden.
 
 Hier noch ein Beispiel, wie die Tabelle ~\ref{tbl:tracks}  in SQL aussieht:
-\begin{lstlisting}[frame=single, language=SQL, style=SQL]  
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Erstellen der Tabelle Album}]  
 CREATE TABLE Track (
 	AlbumFk INT NOT NULL,
 	TrackId INT NOT NULL,
@@ -319,42 +486,63 @@ Erstelle die anderen vier Tabellen dieses Kapitels in SQL.
 Eine Datenbank abzufragen macht erst Sinn, wenn Daten drin sind. Dies geschieht mit dem INSERT INTO-Statement. Dieses Statement besteht aus zwei Teilen.
 Im ersten Teil wird angegeben, in welche Spalten welcher Tabelle Werte eingesetzt werden. Im zweiten-Teil, nach dem VALUES-Keyword, werden die 
 Werte eigesetzt. Das Ganze sieht zum Beispiel f"ur die Booking-Tabelle so aus:
-\begin{lstlisting}[frame=single, language=SQL, style=SQL]  
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Einf"ugen eines Datensatzes}]  
 INSERT INTO Booking 
 	(BookingKey, ServiceFk, CustomerFk, StartDate)
-VALUES (4, 1, 3, '21.11.2014 10:30')
+VALUES (4, 1, 3, '2014-11-21 10:30')
 \end{lstlisting}
 In diesem Beispiel sehen wir auch, wie wir in SQL mit Datentypen umgehen m"ussen: Zahlenwerte schreiben wir ganz gew"ohnlich aus. Alle
-anderen Datentypen, also Zeitdaten und Zeichenketten schreiben wir mit Hochkommas.  
+anderen Datentypen, also Zeitdaten und Zeichenketten schreiben wir mit Hochkommas. Zeitdaten werden normalerweise im Format 
+yyyy-MM-dd HH:mm(:ss), also zuerst Jahr, dann Monat, anschliessend Tag geschrieben.
+
+Wir k"onnen auch gleich mehrere Daten"atze in einem Befehl in eine Tabelle einf"ugen. Daf"ur muss man die verschiedenen Datens"atze mit Komma 
+voneinander trennen:
+
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Einf"ugen mehrerer Datens"atze}]  
+INSERT INTO Booking 
+	(BookingKey, ServiceFk, CustomerFk, StartDate)
+VALUES (4, 1, 3, '2014-11-21 10:30'),
+       (5, 2, 2, '2014-11-26 14:45')
+\end{lstlisting}
+
 \begin{exercise}
-F"uge in jede der 5 anderen Tabellen einen weiteren Datensatz ein. 
+F"uge die bereits vorhandenen Datens"atze in die Tabellen ein. 
 \end{exercise}
+\section{Kapiteltest}
+Wir arbeiten wieder mit der Datenbank aus Tabellen~\ref{tbl:testStart} bis~\ref{tbl:testEnd}.
 \chapter{Datenbankabfragen}
+Jetzt dass wir wissen, wie wir unsere Datenbanken erstellen und Daten ein"ugen, k"onnen wir anfangen, Daten abzufragen. Wir beginnen damit, Abfragen
+auf eine einzelne Tabelle abzusetzen. Zuerst betrachten wir den Aufbau einer einfachen Abfrage. Anschliessend lernen wir, wie wir unser 
+Suchresultat ordnen k"onnen, und wie wir Daten filtern k"onnen, um uns nur auf relevante Informationen zu beschr"anken. Dann lernen wir zwei Methoden
+kennen, um Daten aus mehreren Tabellen miteinander zu verkn"upfen: Unterabfragen und JOINs. Schliesslich lernen wir, wie wir mehrere Tabellenzeilen
+in ein Resultatfeld zusammen gruppieren k"onnen.
 \section{Aufbau einer SELECT-Abfragen}
-Jetzt dass wir wissen, wie wir unsere Datenbanken erstellen und Daten ein"ugen, k"onnen wir anfangen, Daten abzufragen. Daf"ur verwendet man das SELECT-Keyword. die einfachste Datenabfrage sieht wie folgt aus:
-\begin{lstlisting}[frame=single, language=SQL, style=SQL]  
+ Um Daten abzufragen, 
+verwendet man das SELECT-Keyword. Die einfachste Datenabfrage sieht wie folgt aus:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Einfache SQL-Abfrage}]  
 SELECT *
 FROM Track
 \end{lstlisting}
 Eine SQL-Abfrage in der Datenbank gibt immer eine Tabelle zur"uck. Diese Datenbankabfrage gibt uns die ganze Tabelle Track zur"uck. Nach dem SELECT-Keyword muss man eingeben, welche Daten man 
 im Resultat erhalten m"ochte. * steht f"ur s"amtliche Spalten. Nach dem FROM steht, von welcher Tabelle man die Felder nehmen will. Wenn
 wir zum Beispiel nur die Spalten Name und Duration br"auchten, s"ahe die Abfrage wie folgt aus:
-\begin{lstlisting}[frame=single, language=SQL, style=SQL]  
-SELECT Name, Duration
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Spezifische Spalten abfragen}]  
+SELECT Name, DurationSeconds
 FROM Track
 \end{lstlisting}
-Da der Zweck von SQL ist, Daten "uber mehrere Tabellen abzufragen, ist es oft praktisch, Tabellen in den Abfragen einen neuen Namen zu geben. 
+Da ein wichtiger Zweck von SQL ist, Daten "uber mehrere Tabellen abzufragen, ist es oft praktisch, Tabellen in den Abfragen einen neuen Namen zu geben. 
 Dann kann es auch n"otig sein, Spalten zusammenzufassen, denn wenn mehrere Tabellen zusammengefasst werden, kann es vorkommen, 
 dass gewisse Spalten gleich heissen. Dieses Beispiel macht das gleiche wie das letzte, die Tabelle Track wird jedoch t genannt, und die Track-Spalte
 wird zu Trackname umbenannt. 
-\begin{lstlisting}[frame=single, language=SQL, style=SQL]  
-SELECT t.Name as Trackname, t.Duration
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Tabelle und Spalten benennen}]  
+SELECT t.Name as Trackname, t.DurationSeconds
 FROM Track t
 \end{lstlisting} 
 Bei SELECT-Abfragen k"onnen nicht nur Spalten aus der Tabelle, sondern auch Konstanten oder berechnete Werte abgefragt werden. So gibt zum 
-Beispiel diese Abfrage eine Tabelle zur"uck, bei welcher alle Eintr"age den Status ''In Library'' haben. Weiter sind in der Tabelle die Spieldauer in
-Minuten und der Track-Name in Kleinbuchstaben aufgelistet:
-\begin{lstlisting}[frame=single, language=SQL, style=SQL]  
+Beispiel diese Abfrage eine Tabelle zur"uck, bei welcher alle Eintr"age den Status ``In Library'' haben. Weiter sind in der Tabelle die Spieldauer in
+Minuten und der Track-Name in Kleinbuchstaben aufgelistet. Um den Track-Namen in Kleinbuchstaben zu erhalten, wird die SQL-Funktion LOWER()
+verwendet.
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Berechnete Spalten}]  
 SELECT 'In Library' AS Status, 
 	LOWER(t.Name) as Trackname, 
 	t.DurationSeconds/60 AS DurationMinutes
@@ -362,17 +550,417 @@ FROM Track t
 \end{lstlisting} 
 Weiter gibt es noch das Schl"usselwort DISTINCT zu erw"ahnen. mit diesem Schl"usselwort werden doppelte Eintr"age eliminiert. Beispielsweise 
 gibt uns diese Abfrage zur"uck, wieviel Minuten die Lieder in der Tabelle dauern.
-\begin{lstlisting}[frame=single, language=SQL, style=SQL]  
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={DISTINCT}]  
 SELECT DISTINCT t.DurationSeconds/60 AS DurationMinutes
 FROM Track t
 \end{lstlisting}
-\section{WHERE-Bedingungen}
-\section{ORDER BY}
-\section{Unterabfragen}
-\section{verschiedene JOINs}
+\begin{exercise}
+\label{ex:inverse}
+Finde eine Datenabfrage "uber die bestehenden Tabellen, welche die Werte aus Tabelle~\ref{tbl:exbySolution} zur"uckgibt
+\begin{table}
+    \begin{tabular}{|ll|}
+    \hline
+    NameLower & DurationsMilliseconds       \\ \hline
+    waschen, schneiden & 1800000 \\
+    waschen, schneiden, f"onen & 2700000 \\
+    t"onen & 5400000\\ \hline
+    \end{tabular}
 
+    \caption{Erw"unschtes Resultat aus Aufgabe~\ref{ex:inverse}}
+    \label{tbl:exbySolution}
+\end{table}
+
+\end{exercise}
+
+\section{Sortieren mit ORDER BY}
+Grunds"atzlich ist das Resultat einer SQL-Abfrage ungeordnet. Zwar werden in Praxis die Resultate in den meisten Datenbank-Engines nach 
+Prim"arschl"ussel geordnet, doch davon kann man nicht immer ausgehen. Daher existiert die ORDER BY-Klausel, mit welcher man bestimmen kann, 
+nach welchen Spalten das Resultat geordnet wird. Diese Spalten m"ussen dabei gar nicht unbedingt im Resultat vorkommen. Die Datenbankengine
+sortiert zuerst nach der ersten Spalte, dann nach der zweiten, etc. Wenn nicht anders angegeben, wird aufsteigend sortiert. Mit dem
+DESC-Schl"usselwort nach dem Spaltennamen kann man absteigend sortieren. Das folgende Beispiel liefert das Resultat aus Tabelle~\ref{tbl:orderby}.
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Order By}] 
+SELECT *
+FROM Track t
+ORDER BY AlbumFk DESC, Name
+\end{lstlisting} 
+
+\begin{table}
+	\begin{tabular}{|llll|}    \hline
+    AlbumFk (PK, FK) & TrackId   (PK)  & Name & Duration \\ \hline
+    3		& 1 & Sure Shot       & 3:20    \\
+    2       	& 2 & Rockaway Beach  &  2:07    \\
+    1		& 1 & Around the World       & 3:59    \\
+    1         	& 4 & Otherside        & 4:15    \\ \hline
+    \end{tabular} 
+    \caption{Tracks nach Album und Namen sortiert}
+\end{table}
+\begin{exercise}
+Sortiere die Buchungen von Buchungen absteigend nach Termin.
+\end{exercise}
+\begin{exercise}
+Sortiere die Alben nach Genre, und dann absteigend nach K"unstlername.
+\end{exercise}
+
+\section{WHERE-Bedingungen}
+Wie wir bereits erw"ahnt haben, k"onnen Tabellen in SQL riesig werden. Um den "Uberblick zu behalten, m"ochte man meistens nur einen Teil der
+Resultate zur"uckbekommen. Um dies zu erreichen, kann man die Daten filtern. Der einfachste Weg, die Daten zu beschr"anken, ist es, nur die obersten
+n Datens"atze zu holen. Leider ist diese Klausel nicht standardisiert, und der Syntax ist in allen g"angigen Systemen anders (TOP ins T-SQL, LIMIT 
+in MySQL und noch mal anders in Oracle). Daher verzichten wir hier auf eine Einf"uhrung dieser Klausel.
+
+Um gezielt nach Bedingungen zu filtern, braucht man in allen Versionen von SQL die WHERE-Klausel. 
+In folgendem Beispiel sucht man nach Lieder, welche l"anger als 4 Minuten dauern:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Einfacher WHERE-Filter}] 
+SELECT *
+FROM Track t
+WHERE DurationSeconds > 4*60
+\end{lstlisting} 
+Wenn man mehrere Bedingungen zusammen verbinden m"ochte, tut man dies entweder mit OR oder mit AND. Mit diesen zwei 
+Verbindungsm"oglichkeiten, dem NOT-Ausdruck und entsprechender Klammerung kann man beliebig komplexe logische Verbindungen zwischen
+Bedingungen bauen. Da Auslagenlogik jedoch nicht Teil dieses Kurses ist, betrachten wir ein ganz einfaches Beispiel, in welchem wir nach
+allen Tracks, welche nicht am Anfang des Albums sind, und l"anger als 4 Minuten dauern, suchen:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Mehrere Bedingungen mit AND}] 
+SELECT *
+FROM Track t
+WHERE DurationSeconds > 4*60 AND TrackId <> 1
+\end{lstlisting} 
+\begin{exercise}
+Frage alle Termine in der Woche vom 24. bis 30. November 2014 ab.
+\end{exercise}
+\subsection{Textvergleich}
+Bei Textfelder gibt es die M"oglichkeit, nach Teilstrings zu filtern. Mit dem Schl"usselwort LIKE kann man nach Anfang, Ende oder innerer Teil filtern. 
+Das \%-Zeichen dient dabei als Wildcard. Kommt es nur nach dem Suchtext vor, so wird der Text nach dem Anfang gefiltert, kommt es nur vor dem 
+Suchtext vor, so wird nach dem Ende gefiltert. Wenn das \%-Zeichen auf beiden Seiten des Suchtexts steht, so darf der Suchtext an einer beliebigen 
+Stelle vorkommen. In diesem Beispiel filtern wir nach Lieder, deren Name mit ``Sure'' anfangen 
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Textvergleich mit LIKE}] 
+SELECT *
+FROM Track t
+WHERE Name LIKE 'Sure%'
+\end{lstlisting} 
+\subsection{Vergleich mit NULL}
+Wenn ein Feld leer sein darf, muss man mit dem Filtern aufpassen: Felder, welche NULL sind, k"onnen nicht verglichen werden, und werden deshalb
+nicht retourniert. So ist zum Beispiel das Resultat folgender Abfrage leer:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Vergleich gibt keine NULL-Werte zur"uck}] 
+SELECT *
+FROM Genre
+WHERE ParentGenreFk <> 1
+\end{lstlisting}
+Wir wollten eigentlich nach allen Genres suchen, welche nicht Subgenres von Rock sind. Doch leider wird das NULL nicht verglichen, bzw. scheitert
+der Vergleich. Man ist geneigt, das Problem folgendermassen zu beheben, doch dies n"utzt nichts:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Wirkungsloser NULL-Vergleich}] 
+SELECT *
+FROM Genre
+WHERE ParentGenreFk <> 1 OR ParentGenreFk = NULL
+\end{lstlisting}
+Das Problem ist nach wie vor, dass der Vergleich mit NULL nicht funktioniert. Wenn man mit einem NULL-Wert vergleicht, muss man immer IS NULL
+verwenden, wie folgt:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Funktionierender NULL-Vergleich}] 
+SELECT *
+FROM Genre
+WHERE ParentGenreFk <> 1 OR ParentGenreFk IS NULL
+\end{lstlisting}
+\section{Unterabfragen}
+
+\subsection{Mengenabfragen}
+Anhand unserer jetztigen Kenntnisse, w"urden wir nach den Kunden, die entweder Tester, Muster oder Test heissen, wie folgt suchen:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Vergleich mit mehreren Werten}] 
+SELECT *
+FROM Customer
+WHERE LastName = 'Muster' OR LastName = 'Tester' 
+	OR LastName = 'Test'
+\end{lstlisting}
+Dies funktioniert bei nur drei Vergleichen relativ gut. Mit mehr als ca. 10 Namen wird diese Notation jedoch m"uhsam. Daher kann man hier das Keyword IN
+verwenden, um die Abfrage k"urzer und lesbarer zu machen:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={ Mengenabfrage }] 
+SELECT *
+FROM Customer
+WHERE LastName IN ('Muster', 'Tester', 'Test')
+\end{lstlisting}
+\subsection{Unterabfragen}
+Eine einfache Art, Tabellen miteinander zu verbinden, sind Unterabfragen. Unterabfragen sind den Mengenabfragen aus dem
+vorhergehenden Abschnitt "ahnlich. Lediglich ist die Vergleichsmenge nicht explizit aufgeschrieben, sondern ebenfalls das Resultat einer anderen
+Abfrage. Das folgende Beispiel gibt alle Lieder von Bands, welche mit  ``The'' anfangen, zur"uck. Dies wird zweistufig gemacht: 
+In der Unterabfrage werden alle Ids der Alben, 
+deren K"unstler mit ``The'' anfangen abgefragt. Danach wird die AlbumFk-Spalte mit diese Ids verglichen:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Unterabfrage}] 
+SELECT *
+FROM Tracks
+WHERE AlbumFk IN (
+	SELECT AlbumId
+	FROM Album
+	WHERE ArtistName LIKE 'The%'
+)
+\end{lstlisting} 
+\begin{exercise}
+Erstelle eine Abfrage, welche alle Buchungen zur"uckgibt, deren Service l"anger als 30 Minuten dauert.
+\end{exercise}
+\section{verschiedene JOINs}
+\subsection{INNER JOIN}
+Bisher haben alle unsere Datenbankabfragen nur Werte aus einer Tabelle zur"uckgegeben. Doch wirklich m"achtig wird SQL erst, wenn wir
+Tabellen zusammenf"ugen. Dies geschieht mit INNER JOIN. Die INNER JOIN-Klausel kommt im WHERE-Teil der Abfrage zum Einsatz, und f"ugt
+jeweils zwei Tabellen zusammen. Zum Beispiel erstellen wir so f"ur den Fris"or eine Ansicht, bei welchem er den Namen des Kunden 
+und der Zeitpunkt des Termins sieht:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Einfacher INNER JOIN}] 
+SELECT c.FirstName, c.LastName, b.StartDate
+FROM Customer c INNER JOIN Booking b
+	ON b.CustomerFK = c.CustomerId
+\end{lstlisting}
+\begin{table}
+    \begin{tabular}{|lll|}
+    	\hline
+    	FirstName &LastName & StartDate        \\ 
+       	Ferdinand	&Meier 	& 21.11.2014 10:30 \\
+   	Hans	 &	Muster & 24.11.2014 08:30 \\
+    	Ferdinand& Meier & 23.11.2014 15:00 \\ \hline
+    \end{tabular}
+    \caption{JOIN "uber Customer und Booking}
+    \label{tab:firstjoin}
+\end{table}
+Das Resultat dieser Abfrage ist in Tabelle zu sehen. Dabei k"onnen Eintr"age von gewissen Tabellen mehrfach auftreten. In unserem Beispiel
+taucht Ferdinand Meier in zwei Eintr"agen auf. Beim INNER JOIN spielt es, im Gegensatz zu anderen JOINS, welche wir sp"ater sehen werden,
+keine Rolle, welche Tabelle links und welche rechts des JOINs steht.
+
+So k"innen wir auch mehrere INNER JOINS aneinanderreihen, um beliebig viele Tabellen zusammenf"ugen. Daf"ur hier ein Beispiel, bei welchem
+in der Musikdatenbank s"amtliche Informationen zu den Tracks zusammengetragen werden.
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Mehrere INNER JOINs}] 
+SELECT t.Name as TrackName, a.ArtistName, 
+	a.AlbumName, g.GenreName
+FROM Track t 
+	INNER JOIN Album a ON t.AlbumFk = a.AlbumId
+	INNER JOIN Genre g ON a.GenreFk = g.GenreId 
+\end{lstlisting}
+\begin{exercise}
+Erweitere die vorletzte Abfrage um den Namen des Services und dem Enddatum. Um das Enddatum zu berechnet, kannst du auf die eingebaute
+SQL-Funktion DATEADD(minute, x, StartDate) zur"uckgreifen. So erh"altst Du das Datum, welches x Minuten nach dem Startdatum ist.
+\end{exercise}
+\begin{exercise}
+\label{ex:selfjoin}
+Verbinde die Genre-Tabelle mit sich selbst, so dass in der ersten Spalte das Untergenre und in der zweiten Spalte das Genre steht.
+\end{exercise}
+\subsection{OUTER JOIN}
+Wie der aufmerksame Leser vielleicht schon bemerkt hat, sind bei einem JOIN nicht alle Eintr"age der verkn"upften Tabellen vorhanden. Zum 
+Beispiel taucht in der  Tabelle~\ref{tab:firstjoin} Anja Tester nicht mehr auf. Es kann sein, dass man s"amtliche Eintr"age einer Tabelle erhalten 
+m"ochte. Daf"ur ist der OUTER JOIN. Ein LEFT, bzw. ein RIGHT OUTER JOIN stellt sicher, dass jeder Eintrag der Tabelle links, bzw. rechts
+des Schl"usselworts mindestens einmal auftritt. Ein FULL OUTER JOIN stellt sicher, dass jeder Eintrag beider Tabellen vorkommt. Wenn man 
+bei der Abfrage zu Tabelle~\ref{tab:firstjoin} das INNER JOIN durch ein LEFT OUTER JOIN ersetzen w"urde, so erh"alte man 
+Tabelle~\ref{tab:outerjoin}.
+\begin{table}
+    \begin{tabular}{|lll|}
+    	\hline
+    	FirstName &LastName & StartDate        \\ 
+       	Ferdinand	&Meier 	& 21.11.2014 10:30 \\
+   	Hans	 &	Muster & 24.11.2014 08:30 \\
+    	Ferdinand& Meier & 23.11.2014 15:00 \\
+    	Anja & Tester & NULL \\ \hline
+    \end{tabular}
+    \caption{LEFT OUTER JOIN}
+    \label{tab:outerjoin}
+\end{table}
+\begin{exercise}
+F"uhre von Hand die vier JOINs (INNER / LEFT OUTER / RIGHT OUTER / FULL OUTER)-Operationen auf die Tabelle Genre und sich selbst (wie in
+Aufgabe~\ref{ex:selfjoin}) aus.
+\end{exercise}
+
+\subsection{JOIN mit Unterabfragen}
+Joins sind nicht nur mit bereits existierenden Tabellen m"oglich. Wir k"onnen JOINs auch mit berechneten Tabellen ausf"uhren. Hier ein Beispiel:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={JOIN mit berechneter Tabelle}]
+SELECT * 
+FROM Album a INNER JOIN
+  (SELECT AlbumFk
+    'In Library' AS Status, 
+    LOWER(t.Name) as Trackname, 
+    t.DurationSeconds/60 AS DurationMinutes
+  FROM Track t) t2
+  ON t2.AlbumFk = a.AlbumKey
+\end{lstlisting}
+Wenn man mit vielen Unterabfragen arbeitet, kann man sehr schnell die "Ubersicht "uber die verschiedenen Tabellennamen, bzw. Spaltennamen zu
+verlieren. Daher empfiehlt es sich dann, selbsterkl"arende Namen einzuf"uhren.    
+\section{Aggregierung mit GROUP BY}
+Alle Datenbankabfragen, welche wir bisher abgesetzt haben, lieferten Rohdaten zur"uck. Manchmal reicht es jedoch, Statistiken "uber die Daten zu
+sehen. Beispielsweise m"ochte man nur die Anzahl Buchungen pro Service sehen, oder man m"ochte nur die Gesamt"lange der Alben
+wissen. Um dies zu tun, gruppiert man die Eintr"age nach gewissen Spalten mit dem GROUP BY-Befehl. Die Datenbankengine fasst dann s"amtliche
+Zeilen, welche die gleichen Gruppierungsfelder haben, in eine Zeile zusammen. Dabei werden Spalten, nach welchen nicht gruppiert werden, mit
+einer Aggregationsfunktion zusammengetragen. Jede Spalte des Resultats muss bei einer GROUP BY-Abfrage entweder ein Gruppierungsfeld oder
+eine Aggregationsfunktion sein. M"ogliche Aggregationsfunktionen sind: 
+\begin{itemize}
+\item COUNT(*), gibt die Anzahl zusammengefassten Datens"atze zur"uck
+\item MAX(field) und MIN(field), retourniert den maximalen, bzw. minimalen Wert einer Spalte
+\item AVG(field), retourniert den Durchschnitt einer Spalte
+\end{itemize}
+So sieht die Abfrage f"ur die Anzahl Buchungen pro Service aus:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Z"ahlen der Buchungen pro Service}] 
+SELECT ServiceFk, COUNT(*)
+FROM Booking
+GROUP BY ServiceFk
+\end{lstlisting}
+\begin{exercise}
+\label{ex:groupBy1}
+Erstelle eine Abfrage, welche in der Tabelle Tracks die AlbumFk und die Gesamtl"ange des Albums auflistet.
+\end{exercise}
+\subsection{GROUP BY mit JOINS (freiwillig)}
+Die letzte Abfrage w"are viel sch"oner, wenn wir gleich den Servicenamen dazu nehmen w"urden. Dies k"onnen wir mit JOIN zusammenf"ugen.
+Die Abfrage sieht etwa so aus:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Versuch, GROUP BY mit JOIN zu kombinieren.}] 
+SELECT ?, COUNT(*)
+FROM Booking b INNER JOIN Service s
+	ON s.ServiceKey = b. ServiceFk
+GROUP BY b.ServiceFk
+\end{lstlisting}
+Jetzt stellt sich die Frage, was beim Fragezeichen stehen sollte. Da s.Name noch kein Gruppierungsfeld ist, m"usste es aggregiert werden.
+Es gibt hier 3 m"oglichkeiten, weiterzufahren. Alle m"oglichkeiten f"uhren zum Ziel, doch die letzte ist zu bevorzugen. 
+\begin{enumerate}
+\item Wir verwenden einfach eine Aggregierung, welche etwas Sinnvolles zur"uckliefert, wie zum Beispiel MAX(s.Name). Dies funktioniert,
+da Zeichenketten in SQL auch geordnet werden k"onnen, und das Maximum von gleichen Werten den gleichen Wert hat. Dennoch ist diese
+L"osung eher ein Hack, den f"ur andere schwer verst"andlich ist.
+\item Wir gruppieren einfach auch nach s.Name. Auch diese L"osung funktioniert einwandfrei. Da alle Eintr"age mit dem gleichen ServiceFk
+den gleichen Servicenamen haben, macht diese zus"atzliche Gruppierung nichts Sichtbares. Diese L"osung macht jedoch in den meisten
+Datenbankengines die Abfrage ineffizient, und ist auch unsch"on, da nach so wenig Felder wie m"oglich gruppiert werden soll.
+\item Wir gruppieren in einer Unterabfrage. In einer Unterabfrage erstellen wir eine Zwischentabelle bookingByService, welche die ServiceFks
+und die Anzahl als Spalten hat, dann JOINen wir diese Tabelle mit der Booking Tabelle. Dies sieht zwar auf den ersten Blick komplizierter aus, 
+ist jedoch viel deutlicher. Die Abfrage sieht dann so aus:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={JOIN mit gruppierter Tabelle}] 
+SELECT s.Name, BookingCount
+FROM Service s INNER JOIN 
+  (SELECT ServiceFk, COUNT(*) AS BookingCount
+  FROM Booking
+  GROUP BY ServiceFk) bookingByService
+  ON bookingByService.ServiceFk = s.ServiceKey
+\end{lstlisting}
+\end{enumerate} 
+\begin{exercise}
+Erweitere die Abfrage aus Aufgabe~\ref{ex:groupBy1}, so dass der K"unstlername und der Albumname neben der Gesamtspieldauer des Albums steht.
+\end{exercise}
+\subsection{Filtern bei Gruppierungen}
+Bei einer Gruppierungsabfrage kann man wie gewohnt mit einer WHERE-Klausel "uber die Datens"atze filtern. Diese Filterung geschieht dann vor der
+Aggregation. Zum Beispiel kann man wie folgt nur die Buchungen ab dem 24. November f"ur die Statistik ber"ucksichtigen:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Filtern vor Gruppierung}] 
+SELECT ServiceFk, COUNT(*)
+FROM Booking
+WHERE StartDate > '2014-11-24'
+GROUP BY ServiceFk
+\end{lstlisting}
+Es gibt jedoch auch die m"oglichkeit, "uber Aggregationen zu filtern. Dies geschieht mit der HAVING-Klausel. Diese zus"atzliche Filterung steht 
+nach der GROUP BY-Klausel. In diesem Beispiel suchen wir alle Services, welche ab dem 24. November genau ein mal gebucht wurden:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Filtern vor und nach Gruppierung}] 
+SELECT ServiceFk, COUNT(*)
+FROM Booking
+WHERE StartDate > '2014-11-24'
+GROUP BY ServiceFk
+HAVING COUNT(*) = 1
+\end{lstlisting}
+Die Aggregation, welche in der HAVING-Klausel erw"ahnt wird, muss nicht zwingend die gleiche sein wie die im Resultat, wie sie in der n"achsten "Ubung
+sehen werden
+\begin{exercise}
+Erstelle eine Abfrage, welche die Gesamtdauer der Alben, bei welchen die Durchschnittsdauer der Tracks weniger als 3 Minuten betr"agt, berechnet.
+\end{exercise} 
+\begin{exercise}
+Gebe bei den folgenden Bedingungen an, ob es sich  um eine WHERE oder eine HAVING-Klausel handeln wird:
+\begin{itemize}
+\item Finde die Anzahl Buchungen aller Kunden, welche schon mindestens zwei Buchungen get"atigt haben. Erstellen Sie anschliessend die Abfrage.
+\item Finde die Anzahl Buchungen des ``T"onen''-Services aller Kunden.
+\item Finde die Alben, welche mehr als 10 Tracks haben.
+\item Finde die durchschnittliche Dauer der ersten f"unf Tracks jedes Albums.
+\item (Abfrage erstellen freiwillig) F"ur diese Aufgabe ist ein Bonustrack in einem Album ein Track, deren Vorg"anger nicht existiert. In unserem
+Beispiel sind Rockaway Beach und Otherside Bonustracks, da in unserem unvollst"andigen Beispiel Track 1 auf Album 2, bzw. Track 3 in Album 1
+nicht existieren. Finde die Alben-Ids aller Alben mit Bonustracks. 
+\end{itemize} 
+\end{exercise}
+\section{Kapiteltest}
 \chapter{Datenbankmanipulationen}
-\section{Einf\"{u}gen}
+Wir haben jetzt gelernt, wie man Datenbanken erstellt, wie man Datens"atze einf"ugt, und wie man diese Daten abfragt. Was jetzt noch fehlt ist das
+eigentliche Arbeiten mit den Daten, also wie man Datens"atze bearbeitet und l"oscht. Diese Operationen sind einfacher zu verstehen, wenn man das
+Abfragen von Daten bereits beherrscht. Daher wurden sie bis jetzt vorenthalten. In diesem Kapitel sehen wir auch, wie wir anhand bereits vorhandener Daten
+weitere Daten generieren kann.
+\section{L"oschen}
+Die L"oschabfrage ist der einfachen SELECT-Abfrage sehr "ahnlich. Mit diesem Befehl w"urden s"amtliche Datens"atze der Tabelle Booking gel"oscht:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={L"oschen aller Zeilen einer Tabelle}] 
+DELETE
+FROM Booking
+\end{lstlisting} 
+Nat"urlich kommt es sehr selten vor, dass man alle Daten aus einer Tabelle l"oschen muss. Daher kommt der WHERE-Filter beim l"oschen h"aufig zum 
+Einsatz.   
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={L"oschen von gefilterten Zeilen}] 
+DELETE
+FROM Booking
+WHERE BookingId = 3
+\end{lstlisting} 
+\subsection {L"oschen mit JOINs}
+Analog zu den SELECT-Abfragen kann es auch bei DELETEs notwendig sein, die Daten "uber mehrere Tabellen herauszufiltern, bevor man sie l"oscht.
+In diesem Fall muss man spezifizieren, von welchen Tabellen man die Daten l"oschen m"ochte. In folgendem Beispiel werden s"amtliche Buchungen
+von Kunden gel"oscht, die Tester heissen. Die Kunden selbst werden jedoch nicht aus der Datenbank gel"oscht:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={L"oschen mit JOIN}] 
+DELETE b
+FROM Booking b INNER JOIN Customer c
+  ON b.CustomerFk = c.CustomerKey
+WHERE c.LastName = 'Tester'
+\end{lstlisting} 
 \section{Updates}
+Der UPDATE-Befehl funktioniert analog zum SELECT- und zum DELETE-Befehl.  Der einzige Unterschied ist, dass man spezifizieren muss, welche
+Felder wie aktualisiert werden m"ussen. In diesem Beispiel verbessern wir endlich einen Schreibfehler in der urspr"unglichen Datenbank:
+ \begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Einfaches Update}] 
+UPDATE Album
+SET ArtistName = 'Red Hot Chili Peppers'
+WHERE AlbumId = 1
+\end{lstlisting} 
+Man kann auch gleich mehrere Spalten gleichzeitig in der Datenbank bearbeiten. Dazu reiht man die Felder mit Komma getrennt aneinander, wie in 
+folgendem Beispiel. Anmerkung: Dieser Syntax funktioniert nicht in PL/SQL.
+ \begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Update mehrerer Spalten}] 
+UPDATE Service
+SET Name = 'Nur Waschen', DurationMinutes = 25
+WHERE ServiceId = 1
+\end{lstlisting} 
+\begin{exercise}
+Angenommen, wir erweitern die Tabelle Customer um eine Spalte FullName, welche aus FirstName, LastName und einem Leerzeichen
+besteht. Schreibe eine UPDATE-Skript, welches diese Spalte bef"ullt. Tipp: Um Zeichenketten aneinaderzuh"angen, kann man die SQL-
+Funktion CONCAT(,) verwenden. Diese Funktion kann mit beliebig vielen Parameter aufgerufen werden. 
+\end{exercise}
+\subsection{Updates mit JOINs}
+Um Daten von anderen Tabellen der Datenbank f"ur ein Update zu verwenden, empfiehlt es sich, JOINS zu verwenden. Leider ist dies nicht im 
+SQL-Standard enthaten. Daher variiert der Syntax
+dieser sehr n"utzlichen Funktionalit"at sehr stark zwischen den verschiedenen SQL-Erweiterungen. Daher hier ein Beispiel, welches zumindest in
+MySQL funktioniert. In den meisten Erweiterungen sieht diese Abfrage "ahnlich (jedoch etwas komplizierter) aus.
+In diesem Beispiel nehmen wir an, dass die Track-Tabelle um die Spalte ArtistName erweitert worden ist, und f"ullen nun diese
+Spalte mit den Daten aus der Album-Tabelle ab:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Update mit JOIN in MySQL}] 
+UPDATE Album a INNER JOIN Track t 
+  ON a.AlbumKey = t.AlbumFk
+SET t.ArtistName = a.ArtistName
+\end{lstlisting} 
+Der Vollst"andigkeit halber zeigen wir hier noch wie das Gleiche im SQL-Standard aussieht. Hier verwendet man eine Unterabfrage, um
+den Wert des K"unstlernamen zu erhalten:
+ \begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Standardisierter Update mit JOIN}] 
+UPDATE Track t 
+SET t.ArtistName = (
+  SELECT a.ArtistName
+  FROM Album a
+  WHERE a.ArtistKey = t.AlbumFk
+)
+\end{lstlisting} 
+
+
+\begin{exercise}
+Angenommen, wir erweitern die Tabelle Booking um eine Spalte Comment, in welcher Text geschrieben werden kann.
+ Schreibe eine UPDATE-Skript, welches diese Spalte mit Vornamen, Nachnamen und Servicenamen bef"ullt.
+ Tipp: Wie in der letzten Aufgabe wird hier auch die CONCAT()-Funktion ben"otigt.
+ \end{exercise}
+ \begin{exercise}
+Angenommen, wir erweitern die Tabelle Booking um eine Spalte EndDate, in welcher das Enddatum des Termins geschrieben werden soll.
+Schreibe eine UPDATE-Skript, welches diese Spalte f"ullt.
+\end{exercise}
+\section{Einf\"{u}gen}
+Wir k"onnen auch mittels Unterabfrage das Generieren von Daten erleichtern. Als Beispiel nehmen wir hier wieder das Fris"orunternehmen.
+Dieses m"ochte nun seine Kunden "uber das Internet Termine buchen lassen, und m"ochte f"ur jedes seiner Kunden ein Login erstellen. Diese Logins
+werden in eine Tabelle User gespeichert, welche "uber die Pflichtfelder CustomerFk, Login und IsPasswordSet. Folgendes Skript
+erstellt einen Benutzer f"ur jeden Kunden, bei welchem das Passwort noch nicht gesetzt ist, und dessen Login der Emailadresse des Benutzers
+entspricht.
+ \begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Daten generieren}] 
+INSERT INTO User (CustomerFk, Login, IsPasswordSet)
+SELECT (CustomerId, Email, 0) 
+FROM Customer
+\end{lstlisting} 
+\section{Kapiteltest}
 \chapter{L"osungen}
+\section{Kapitel 1}
+\section{Kapitel 2}
+\section{Kapitel 3}
+\section{Kapitel 4}
 \end{document}
