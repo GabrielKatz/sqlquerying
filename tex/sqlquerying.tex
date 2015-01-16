@@ -34,7 +34,6 @@
 \theoremprework{\bigskip\needspace{\baselineskip}\hrule}
 \theorempostwork{\needspace{\baselineskip}\hrule\bigskip}
 \newtheorem{exercise}{Aufgabe}[chapter]
-
 \renewcommand{\labelenumii}{\arabic{enumi}.\arabic{enumii}.}
 \newcommand{\algostep}[2]{\noindent\parbox{4cm}{\scalebox{0.5}{\includegraphics{#1}}}
   \hfill
@@ -73,7 +72,7 @@ zu speichern.
 Die relationalen Datenbanken sind die wohl verbreitetste Art von Datenbanken. Was sie genau sind, werden wir im 
 n"achsten Abschnitt genauer betrachten. Zwar gibt es zur Zeit einen Trend zu anderen, sogenannten 
 NoSQL-Datenbanken, doch auch f"ur diese sind Kenntnisse in relationalen Datenbanken wichtig.
-Daher besuch"aftigen sich diese Unterlagen mit SQL, der Standardsprache in relationalen Datenbanken. Den Rest 
+Diese Unterlagen besch"aftigen sich mit SQL, der Standardsprache in relationalen Datenbanken. Den Rest 
 dieses Kapitels werden wir mit den relationalen Datenbanken und deren Aufbau besch"aftigen. Kapitel 2 erkl"art was
 SQL ist, und zeigt, wie man eine Datenbank in SQL erstellt. Kapitel 3 ist das Kernkapitel dieser Unterlagen und erkl"art
 ausf"ehrlich, wie man Daten in SQL abfragt. Schliesslich sehen wir in Kapitel 4, wie man die Anfragetechniken verwendet,
@@ -82,8 +81,8 @@ um Daten in SQL zu manipulieren.
 Wir arbeiten in dieser Unterrichtseinheit mit 3 verschiedenen Datenbankbeispiele. In den Kapitel selbst verwenden wir zwei
 minimale Datenbanken, welche nur 3 Tabellen beinhalten. Die Kapiteltests bearbeiten ein etwas gr"osseres Datenbankmodell.
 
-SQL verf"gut "uber sehr viele Funktionen, um mit den internen Datentypen zu transformieren. Beispielsweise gibt es viele
-Funktionen, um Zeitdaten zu vergleichen und zu berechnen. Da diese Unterlagen sich nicht als SQL-Referenz versteht, 
+SQL verf"ugt "uber sehr viele Funktionen, um mit den internen Datentypen zu transformieren. Beispielsweise gibt es eine
+Funktionsbibliothek, um Zeitdaten zu vergleichen und zu berechnen. Da diese Unterlagen sich nicht als SQL-Referenz versteht, 
 werden solche Funktionen nur dann eingef"uhrt, wenn sie verwendet werden.
 \section{Relationale Datenbanken}
 Das Konzept f\"{u}r relationale Datenbanken basiert auf einem Paper von Dr. E. F. Codd aus dem Jahre 1970 
@@ -95,12 +94,14 @@ welcher ein Datum gespeichert wir einen anderen Datentypen wie eine Spalte mit Z
 Wir werden die Datentypen in SQL im n\"{a}chsten Kapitel etwas mehr im Detail betrachten. \\
 Die Daten werden 
 dann in den \textbf{Zeilen} der Tabelle gespeichert. Jede Zeile der Tabelle enth\"{a}lt mindestens in allen 
-obligatorischen Spalten Daten. Normalerweise ist die Anzahl der Spalten der Tabelle (des Datenschemas) 
+obligatorischen Spalten Daten. Wenn eine Zeile in einer Spalte keine Daten hat, sagt man auch, dass sie NULL enth"alt.
+ Normalerweise ist die Anzahl der Spalten der Tabelle (des Datenschemas) 
 \"{u}berschaubar, wogegen die Anzahl der Zeilen riesig sein kann. \\
 Eine Tabelle in einer relationalen Datenbank hat immer ein Merkmal, an welchem die Zeilen der Tabellen eindeutig
 identifiziert werden können. Dieses Merkmal wird \textbf{Prim\"arschl\"ussel (PK)} genannt. Dieser Prim\"arschl\"ussel 
 besteht h\"aufig aus einer einzelnen Tabellenspalte, doch er kann auch aus mehreren Tabellenspalten bestehen.
-In diesem Fall spricht man von einem \textbf{zusammengesetzten} Schl\"ussel. H\"aufig ist der Prim\"arschl\"ussel eine
+In diesem Fall spricht man von einem \textbf{zusammengesetzten} Schl\"ussel. Keines der Tabellenspalten des Prim"arschl"ussels 
+darf fakultativ sein.  H\"aufig ist der Prim\"arschl\"ussel eine
 Spalte, welche nicht eigentliche Daten enth\"alt, sondern nur ein Kennzeichen. In den hier gezeigten Beispielen ist der 
 Prim\"arschl\"ussel fast immer ein Zahlwort, doch dies muss nicht immer so sein.\\
 Die Kernidee hinter den relationalen Datenbanken, ist, dass diese Tabellen verbunden sind. Doch wie sieht eine 
@@ -169,7 +170,7 @@ sich hierbei um eine Namenskonvention des Autoren. Andere Namen sind durchaus de
 Was bedeutet es, wenn beim Eintrag mit der $BookingId$ 2 der $ServiceFK$ von 1 auf 2 ge\"andert wird?
 \end{exercise}
  \begin{exercise}\label{ex:noComposedKey}
-Wieso k\"onnen die Spalten $ServiceId$ und $CustomerId$ keinen zusammengesetzten Prim\"arschl\"ussel f\"ur die 
+Wieso sollten die Spalten $ServiceId$ und $CustomerId$ keinen zusammengesetzten Prim\"arschl\"ussel f\"ur die 
 Tabelle $Booking$ bilden?
 \end{exercise}
 
@@ -182,10 +183,10 @@ als zumsammengesetzten Prim"arschl"ussel.
 Ein weiteres h"aufiges Muster, dass bei relationalen Datenbanken vorkommt, ist bei der Genre-Tabelle zu finden. Wir sehen,
 dass die $ParentGenreFk$ die eigene Tabelle referenziert. Im Beispiel ist $Punk Rock$ ein Subgenre von $Rock$. Wir stellen 
 ausserdem fest, dass gewisse Genres einen $NULL$-eintrag beim Feld $ParentGenreFk$ haben. Dies ist die Notation, welche
-besagt, dass dieses Feld f"ur einen Eintrag nicht verwendet wird. Eine Zeile kann nur in den Spalten $NULL$-eintr"age haben,
-in welchem
+besagt, dass dieses Feld f"ur einen Eintrag nicht verwendet wird. Eine Zeile kann nur in als fakultativ deklarierten Spalten $NULL$-eintr"age
+haben.
  \begin{exercise}\label{ex:NULL}
-K"onnte in der Spalte $AlbumFk$ der Tabelle $Track$ ein $NULL$-eintrag stehen? Wieso bzw. wieso nicht?
+K"onnte in der Spalte $AlbumFk$ der Tabelle $Track$ leer sein? Wieso bzw. wieso nicht?
 \end{exercise}
 \begin{table}
     \begin{tabular}{|llll|}
@@ -227,7 +228,10 @@ In diesem Kapiteltest wird ein etwas Datenmodell eingef"uhrt, welches uns im Res
 werden Biere, deren Angebot in Bars, und deren Bestellungen von diversen Personen verwaltet. Tabellen~\ref{tbl:testStart} 
 bis~\ref{tbl:testEnd} zeigt die Daten dieses Systems. In der Tabelle Bar sind die Bars aufgelistet. Die Brauerei Tabelle listet die Brauereien
 im System, und die Kunden erscheinen in der Kunden Tabelle. Wenn eine Bar ein Bier im Sortiment hat, existiert ein entsprechenden Eintrag in
-der Sortiment-Tabelle mit dem entsprechenden Verkaufspreis. Eine Bestellung ist ein Eintrag in der Bestellungstabelle. Da jedoch die Bestellung mehrere 
+der Sortiment-Tabelle mit dem entsprechenden Verkaufspreis. Da die Preisinformation in dieser Tabelle enthalten ist, k"onnen Biere nicht einfach aus
+dem Sortiment gel"oscht werden, da sonst Informationen zu alten Bestellungen verloren gehen w"urden. Anstatt dessen wird der Wert in der 
+Deleted-Spalte auf 1 gesetzt. Mehr dazu im Abschnitt~\ref{sec:refint}.
+Eine Bestellung ist ein Eintrag in der Bestellungstabelle. Da jedoch die Bestellung mehrere 
 verschiedene Biere beinhalten kann, sind diese in einer separaten Tabelle vermerkt. Jede Bestellung kann mehrere verschiedene Bestellte Biere haben.
 Diese Tabelle verf"ugt "uber eine Anzahl bestellter Biere, damit nicht jedes einzelne Bier separat aufgelistet werden muss.
 
@@ -255,7 +259,7 @@ Diese Tabelle verf"ugt "uber eine Anzahl bestellter Biere, damit nicht jedes ein
     \begin{tabular}{|lllll|}
     \hline
     BierId &BrauereiFk &Name & Deziliter  & Einkaufpreis        \\ 
-       (PK) &(FK(Brauerei.BrauereiId)) & (FK(Customer.CustomerId)) & & \\ \hline
+       (PK) &(FK(Brauerei.BrauereiId)) &  & & \\ \hline
     1 &1                  & Qu"ollfrisch                   & 5 & 1.30 \\
     2 &1                  & Vollmond                   & 3.3 & 1.30 \\
     3 & 1                  & Brandl"oscher     & 3.3& 1.20 \\ 
@@ -280,36 +284,36 @@ Diese Tabelle verf"ugt "uber eine Anzahl bestellter Biere, damit nicht jedes ein
     \caption {Kunde}
     \end{table} 
     \begin{table}
-     \begin{tabular}{|lll|}
+     \begin{tabular}{|lllll|}
     \hline
-    BarFk &BierFk & Preis        \\ 
-       (PK, FK(Bar.BarId) &(PK, FK(Bier.BierId)) & \\ \hline
-    1 &2                  & 4.00 \\
-    1 &1                  & 6.00 \\
-    1 & 3                  & 5.00 \\ 
-    1 &7                  & 5.00 \\
-    2 &4                  & 5.00 \\
-    2 & 7                  & 6.00 \\ 
-    2 & 8                  & 6.00 \\
-    2 & 9                  & 6.00 \\
-    3 & 6                  & 7.00 \\
-    3 & 5                  & 5.00 \\
-    3 & 4                  & 5.00 \\ 
-    3 & 1                  & 7.50 \\
-    3 & 2                  & 5.50 \\
-    3 & 7                  & 6.00 \\
-    3 & 8                  & 6.00 \\
+    SortimentId & BarFk &BierFk & Preis  & Deleted     \\ 
+    PK& (FK(Bar.BarId) &(FK(Bier.BierId)) & & \\ \hline
+    1 &1 &2                  & 4.00 &0\\
+    2 &1 &1                  & 6.00 &0\\
+    3 & 1 & 3                  & 5.00 &0\\ 
+    4 & 1 &7                  & 5.00 &0\\
+    5 & 2 &4                  & 5.00 &0\\
+    6 & 2 & 7                  & 6.00 &0\\ 
+    7 & 2 & 8                  & 6.00 &0\\
+    8 & 2 & 9                  & 6.00 &0\\
+    9 & 3 & 6                  & 7.00 &0\\
+    10 & 3 & 5                  & 5.00 &0\\
+    11 & 3 & 4                  & 5.00 &0\\ 
+    12 & 3 & 1                  & 7.50 &0\\
+    13 & 3 & 2                  & 5.50 &0\\
+    14 & 3 & 7                  & 6.00 &0\\
+    15 & 3 & 8                  & 6.00 &0\\
     
      \hline
     \end{tabular}
     \caption{Sortiment}
          \begin{tabular}{|llll|}
     \hline
-    BestellungId &KundenId & BarId & Zeit        \\ 
+    BestellungId &KundenFk & BarFk & Zeit        \\ 
        (PK) &(FK(Kunde.KundenId)) & (FK(Bar.BarId)) &\\ \hline
     1 &2                  & 1 & 31.12.2014 22:00\\
-    2 &1                  & 2 & 31.12.2014 23:23\\
-    3 & 1                  & 2 & 31.12.2014 23:24\\ 
+    2 &1                  & 1 & 31.12.2014 23:23\\
+    3 & 1                  & 1 & 31.12.2014 23:24\\ 
     4 &3                  & 2 & 31.12.2014 23:52\\
     5 &4                  & 3 & 1.1.2015 01:21\\
  
@@ -317,19 +321,19 @@ Diese Tabelle verf"ugt "uber eine Anzahl bestellter Biere, damit nicht jedes ein
      \hline
     \end{tabular}
     \caption {Bestellung}
-         \begin{tabular}{|lllll|}
+         \begin{tabular}{|lll|}
     \hline
-    BestellteBierId &BestellungFk & BarFk & BierFk & Anzahl        \\ 
-       (PK) &(FK(Bestellung.& (FK(Sortiment. & (FK(Sortiment.& \\ 
-              &BestellungId)) &BarFk)) &BierFk))& \\ \hline
-    1 &1&1&3&2\\
-    2 &2&1&1&1\\
-    3 & 2&1&3&2\\ 
-    4 & 3&1&7&1\\
-    5 &4 &2&7&3\\
-    6&4&2&4&1\\ 
-    7&5&3&1&3\\
-   8&5&3&6&1\\ 
+    BestellungFk &SortimentFk & Anzahl        \\ 
+       (PK, FK(Bestellung.& (PK, FK(Sortiment. & \\ 
+              BestellungId)) &SortimentId)) & \\ \hline
+    1&3&2\\
+    2&2&1\\
+    2&3&2\\ 
+    3&4&1\\
+    4 &6&3\\
+    4&5&1\\ 
+    5&12&3\\
+   5&9&1\\ 
     
      \hline
     \end{tabular}
@@ -337,7 +341,7 @@ Diese Tabelle verf"ugt "uber eine Anzahl bestellter Biere, damit nicht jedes ein
     \label{tbl:testEnd}
 \end{table} 
 \begin{exercise}
-Wir versuchen am Anfang, die Daten zu verstehen. Erstelle eine Liste der Biere, welche die verschiedenen Kunden bestellt haben.
+Wir versuchen am Anfang, die Daten zu verstehen. Beschreibe in chronologischer Reihenfolge, welcher Kunde wann wo was bestellt hat.
 \end{exercise}
 \begin{exercise}
 Zu wie viel mal dem Einkaufspreis wird das Vollmond-Bier in der Vollmond-Taverne ausgeschenkt?
@@ -346,15 +350,11 @@ Zu wie viel mal dem Einkaufspreis wird das Vollmond-Bier in der Vollmond-Taverne
 Wie "andert sich die Datenbank, wenn Urs am 1. Januar 2015 um 2 Uhr im Federal noch zwei Sprint bestellt?
 \end{exercise}
 \begin{exercise}
-Die Tabelle Sortiment hat einen zusammengesetzten Prim"arschl"ussel. Was w"aren die Vor- und Nachteile, wenn wir hier auch ein zus"atzliches Feld
-f"ur den Prim"arschl"ussel einf"uhren w"urden?
+Die Tabelle Sortiment hat einen einfachen Prim"arschl"ussel. Was w"urde passieren, wenn wir hier anstatt dessen
+einen zusammengesetzten Schl"ussel aus BarFk und BierFk nehmen w"urden.
 \end{exercise}
 \begin{exercise}
-Wieso referenziert in der Tabelle BestellteBier die Spalte BarFk die Spalte BarFk aus der Tabelle Sortiment, und nicht die Spalte BarId aus
-der Tabelle Bar
-\end{exercise}
-\begin{exercise}
-Gibt es in der Tabelle BestellteBier einen andere M"oglichkeit f"ur den Prim"arschl"ussel, als die Id-Spalte einzuf"uhren? 
+K"onnte man in der Tabelle BestellteBier f"ur den Prim"arschl"ussel eine Id-Spalte einf"uhren? 
 \end{exercise}
 
 \chapter{Relationale Datenbanken in SQL}
@@ -431,11 +431,14 @@ F"ur Zeichenketten gibt es zwei verschiedene Formate:
 Wenn man bei einem Feld die H"ochstl"ange nicht kennt, kann man auch f"ur $l$ anstatt eines Zahlenwertes den Ausdruck $max$ nehmen.
 Dies kann jedoch bei Textsuchen die Abfrageeffizienz beeintr"achtzigen.
 \begin{exercise}
-An sich k"onnte man jedes der vorgestellten Datentypen in ein \textbf{VARCHAR(max)} schreiben. Wieso verwendet man dann nicht immer 
+An sich k"onnte man jede Zeichenkette in ein \textbf{VARCHAR(max)} schreiben. Wieso verwendet man dann nicht immer 
 \textbf{VARCHAR(max)}? 
 \end{exercise}
 \begin{exercise}
-Bestimme die Datentypen der Beispiele aus dem vorhergehenden Kapitel.
+Bestimme die Datentypen des Buchungsdatenbank aus dem vorhergehenden Kapitel.
+\end{exercise}
+\begin{exercise}
+Bestimme die Datentypen des Musikdatenbank aus dem vorhergehenden Kapitel.
 \end{exercise}
 \section{Datenbanken erstellen in SQL}
 Mit dem Wissen, das wir uns in den letzten Kapitel angeeignet haben, ist es relativ einfach, eine Datenbank mit SQL zu erstellen. Folgendes
@@ -467,20 +470,23 @@ Zeilen 7 bis 12 besch"aftigen sich mit den Fremdschl"ussel. Zus"atzlich zur Info
 beschrieben, welche Spalten welcher Tabelle referenziert werden.
 
 Hier noch ein Beispiel, wie die Tabelle ~\ref{tbl:tracks}  in SQL aussieht:
-\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Erstellen der Tabelle Album}]  
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Erstellen der Tabelle Track}]  
 CREATE TABLE Track (
 	AlbumFk INT NOT NULL,
 	TrackId INT NOT NULL,
 	Name NVARCHAR(200),
 	DurationSeconds INT NOT NULL,
 	CONSTRAINT pk_track PRIMARY KEY 
-		(AlbumFK, TrackId)
+		(AlbumFk, TrackId)
 	CONSTRAINT fk_album FOREIGN KEY (AlbumFk)
 		REFERENCES Album(AlbumKey)
 );
 \end{lstlisting}
 \begin{exercise}
-Erstelle die anderen vier Tabellen dieses Kapitels in SQL.
+Erstelle die zwei anderen Tabellen dieser Datenbank in SQL.
+\end{exercise}
+\begin{exercise}
+Erstelle die restlichen zwei Tabellen der Buchungsdatenbank in SQL.
 \end{exercise}
 \section{Daten einsetzen}
 Eine Datenbank abzufragen macht erst Sinn, wenn Daten drin sind. Dies geschieht mit dem INSERT INTO-Statement. Dieses Statement besteht aus zwei Teilen.
@@ -504,12 +510,24 @@ INSERT INTO Booking
 VALUES (4, 1, 3, '2014-11-21 10:30'),
        (5, 2, 2, '2014-11-26 14:45')
 \end{lstlisting}
+In der Praxis ist es h"aufig der Fall, dass Spalten wie BookingKey automatisch generiert werden. Wie man in der Datenbank spezifiziert, dass ein Feld
+automatisch generiert werden soll, variiert von System zu System. Daher gehen wir hier nicht n"aher darauf ein.
 
+Wenn man Daten in SQL-Tabellen einf"ugt, m"ussen die Referenzen existieren. Wenn wir versuchen w"urden, eine Buchung mit CustomerFk 4 einzuf"ugen,
+w"urden wir einen Fehler zur"uckerhalten, selbst wenn wir in der n"achten Zeile den Kunden mit der CustomerId 4 erstellen w"urden. Die 
+Erstellungsreihenfolge ist also wichtig.  
 \begin{exercise}
-F"uge die bereits vorhandenen Datens"atze in die Tabellen ein. 
+Erstelle sie die Beispielsdatens"atze der Tracks-Datenbank mittels SQL-Skript. 
 \end{exercise}
 \section{Kapiteltest}
 Wir arbeiten wieder mit der Datenbank aus Tabellen~\ref{tbl:testStart} bis~\ref{tbl:testEnd}.
+\begin{exercise}
+Erstelle die Datenbanktabellen Bestellung und BestellteBier mittels SQL.
+\end{exercise}
+\begin{exercise}
+Urs hat am 1. Januar 2015 um 2 Uhr im Federal noch zwei Sprint bestellt. Bilde dies mittels Skript in die Datenbank ab.
+\end{exercise}
+
 \chapter{Datenbankabfragen}
 Jetzt dass wir wissen, wie wir unsere Datenbanken erstellen und Daten ein"ugen, k"onnen wir anfangen, Daten abzufragen. Wir beginnen damit, Abfragen
 auf eine einzelne Tabelle abzusetzen. Zuerst betrachten wir den Aufbau einer einfachen Abfrage. Anschliessend lernen wir, wie wir unser 
@@ -699,11 +717,12 @@ Bisher haben alle unsere Datenbankabfragen nur Werte aus einer Tabelle zur"uckge
 Tabellen zusammenf"ugen. Dies geschieht mit INNER JOIN. Die INNER JOIN-Klausel kommt im WHERE-Teil der Abfrage zum Einsatz, und f"ugt
 jeweils zwei Tabellen zusammen. Zum Beispiel erstellen wir so f"ur den Fris"or eine Ansicht, bei welchem er den Namen des Kunden 
 und der Zeitpunkt des Termins sieht:
-\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Einfacher INNER JOIN}] 
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Einfacher INNER JOIN}, label={lst:firstjoin}] 
 SELECT c.FirstName, c.LastName, b.StartDate
 FROM Customer c INNER JOIN Booking b
 	ON b.CustomerFK = c.CustomerId
 \end{lstlisting}
+
 \begin{table}
     \begin{tabular}{|lll|}
     	\hline
@@ -729,7 +748,7 @@ FROM Track t
 	INNER JOIN Genre g ON a.GenreFk = g.GenreId 
 \end{lstlisting}
 \begin{exercise}
-Erweitere die vorletzte Abfrage um den Namen des Services und dem Enddatum. Um das Enddatum zu berechnet, kannst du auf die eingebaute
+Erweitere Listing~\ref{lst:firstjoin} um den Namen des Services und dem Enddatum. Um das Enddatum zu berechnet, kannst du auf die eingebaute
 SQL-Funktion DATEADD(minute, x, StartDate) zur"uckgreifen. So erh"altst Du das Datum, welches x Minuten nach dem Startdatum ist.
 \end{exercise}
 \begin{exercise}
@@ -796,7 +815,7 @@ GROUP BY ServiceFk
 \label{ex:groupBy1}
 Erstelle eine Abfrage, welche in der Tabelle Tracks die AlbumFk und die Gesamtl"ange des Albums auflistet.
 \end{exercise}
-\subsection{GROUP BY mit JOINS (freiwillig)}
+\subsection{GROUP BY mit JOINS}
 Die letzte Abfrage w"are viel sch"oner, wenn wir gleich den Servicenamen dazu nehmen w"urden. Dies k"onnen wir mit JOIN zusammenf"ugen.
 Die Abfrage sieht etwa so aus:
 \begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Versuch, GROUP BY mit JOIN zu kombinieren.}] 
@@ -825,6 +844,8 @@ FROM Service s INNER JOIN
   GROUP BY ServiceFk) bookingByService
   ON bookingByService.ServiceFk = s.ServiceKey
 \end{lstlisting}
+Eine kleine Anmerkung: Diese Technik muss nur dann angewendet werden, wenn die Aggregation eigentlich nur "uber eine Tabelle stattfindet.
+Es gibt F"alle, in welchen Daten aus mehreren Tabellen zusammengerechnet und dann aggregiert werden. Dann braucht man diese Technik nicht. 
 \end{enumerate} 
 \begin{exercise}
 Erweitere die Abfrage aus Aufgabe~\ref{ex:groupBy1}, so dass der K"unstlername und der Albumname neben der Gesamtspieldauer des Albums steht.
@@ -853,18 +874,67 @@ sehen werden
 Erstelle eine Abfrage, welche die Gesamtdauer der Alben, bei welchen die Durchschnittsdauer der Tracks weniger als 3 Minuten betr"agt, berechnet.
 \end{exercise} 
 \begin{exercise}
-Gebe bei den folgenden Bedingungen an, ob es sich  um eine WHERE oder eine HAVING-Klausel handeln wird:
+Gebe bei den folgenden Bedingungen an, ob eine WHERE oder eine HAVING-Klausel gebraucht wird. Die Abfrage muss nicht erstellt werden.
 \begin{itemize}
-\item Finde die Anzahl Buchungen aller Kunden, welche schon mindestens zwei Buchungen get"atigt haben. Erstellen Sie anschliessend die Abfrage.
+\item Finde die Anzahl Buchungen aller Kunden, welche schon mindestens zwei Buchungen get"atigt haben.
 \item Finde die Anzahl Buchungen des ``T"onen''-Services aller Kunden.
 \item Finde die Alben, welche mehr als 10 Tracks haben.
 \item Finde die durchschnittliche Dauer der ersten f"unf Tracks jedes Albums.
-\item (Abfrage erstellen freiwillig) F"ur diese Aufgabe ist ein Bonustrack in einem Album ein Track, deren Vorg"anger nicht existiert. In unserem
-Beispiel sind Rockaway Beach und Otherside Bonustracks, da in unserem unvollst"andigen Beispiel Track 1 auf Album 2, bzw. Track 3 in Album 1
-nicht existieren. Finde die Alben-Ids aller Alben mit Bonustracks. 
 \end{itemize} 
 \end{exercise}
+\begin{exercise}
+Ein Bonustrack in einem Album ein Track, deren TrackId gr"osser ist als die Anzahl Tracks des Albums. In unserem
+Beispiel sind Rockaway Beach und Otherside Bonustracks, da in unserem unvollst"andigen Beispiel Album 2 nur ein Track hat, bzw. Album 2 nur
+zwei Tracks hat. Erstelle eine Abfrage, welche die Alben-Ids aller Alben mit Bonustracks zur"uckgibt.
+\end{exercise}
 \section{Kapiteltest}
+Wieder arbeiten wir mit der Datenbank aus Tabellen~\ref{tbl:testStart} bis~\ref{tbl:testEnd}.
+\begin{exercise}
+Erstelle eine Abfrage, welche die vollst"andige Tabelle Bar zur"uckgibt
+\end{exercise}
+\begin{exercise}
+Erstelle eine Abfrage, welche die Tabelle x zur"uckgibt.
+\end{exercise}
+\begin{exercise}
+Welche Flaschengr"ossen gibt es in dieser Datenbank? Erstelle dazu eine Abfrage. 
+\end{exercise}
+\begin{exercise}
+Erstelle eine Abfrage, welche die Tabelle Sortiment nach Bier geordnet zur"uckgibt.
+\end{exercise}
+\begin{exercise}
+Erstelle eine Abfrage, welche alle Biere, die im Namen ein Umlaut ("a, "o oder "u) enthalten, anzeigt.
+\end{exercise}
+\begin{exercise}
+Zeige alle Biere der Brauerei mit der Id 1 mittels Datenbankabfrage an.
+\end{exercise}
+\begin{exercise}
+Zeige alle Biere an, deren Einkaufspreis pro Deziliter unter 40 Rappen ist.
+\end{exercise}
+\begin{exercise}
+Erstelle eine Abfrage, welche den Namen jedes Kunden und den Namen seines Lieblingsbier anzeigt. Dabei sollen auch Kunden angezeigt werden,
+welche kein Lieblingsbier haben.
+\end{exercise}
+\begin{exercise}
+Erstelle eine Abfrage, welche den Namen jedes Kunden und den Namen seines Lieblingsbier anzeigt. Dabei sollen auch Kunden angezeigt werden,
+welche kein Lieblingsbier haben. Ausserdem sollen auch gleich die Biere, welche von keinem Kunden favorisiert werden, ausgegeben werden
+\end{exercise}
+\begin{exercise}
+Erstelle eine Abfrage, welche f"ur jeden Eintrag in der Tabelle BestellteBier den Kundennamen, den Biernamen und das Datum retourniert.
+\end{exercise}
+\begin{exercise}
+Erstelle eine Abfrage, welche bei jeder Bestellung KundenId, BarId und Gesamtpreis zur"uckgibt.
+\end{exercise}
+\begin{exercise}
+Erstelle eine Abfrage, welche f"ur jede BarId, welche von Bestellungen referenziert wird, den Umsatz f"ur die Silvesternacht 
+(31.12.2014 18:00 bis 1.1.2015 06:00) zur"uckgibt.
+\end{exercise}
+\begin{exercise}
+Zeige die Namen der Personen an, welche in der Silvesternacht mehr als 20 Franken f"ur Bier ausgegeben haben.
+\end{exercise}
+\begin{exercise}
+Erstelle eine Abfrage, welche den Biernamen und dessen g"unstigsten Verkaufspreis zur"uckgibt. Tipp: Die Abfrage muss ber"ucksichtigen, ob das
+Bier im Sortiment als gel"oscht markiert wurde.
+\end{exercise}
 \chapter{Datenbankmanipulationen}
 Wir haben jetzt gelernt, wie man Datenbanken erstellt, wie man Datens"atze einf"ugt, und wie man diese Daten abfragt. Was jetzt noch fehlt ist das
 eigentliche Arbeiten mit den Daten, also wie man Datens"atze bearbeitet und l"oscht. Diese Operationen sind einfacher zu verstehen, wenn man das
@@ -882,7 +952,10 @@ Einsatz.
 DELETE
 FROM Booking
 WHERE BookingId = 3
-\end{lstlisting} 
+\end{lstlisting}
+\begin{exercise}
+L"osche alle Tracks, welche mit einem Leerzeichen enden.
+\end{exercise}
 \subsection {L"oschen mit JOINs}
 Analog zu den SELECT-Abfragen kann es auch bei DELETEs notwendig sein, die Daten "uber mehrere Tabellen herauszufiltern, bevor man sie l"oscht.
 In diesem Fall muss man spezifizieren, von welchen Tabellen man die Daten l"oschen m"ochte. In folgendem Beispiel werden s"amtliche Buchungen
@@ -892,8 +965,32 @@ DELETE b
 FROM Booking b INNER JOIN Customer c
   ON b.CustomerFk = c.CustomerKey
 WHERE c.LastName = 'Tester'
-\end{lstlisting} 
-\section{Updates}
+\end{lstlisting}
+\begin{exercise}
+L"osche alle Tracks vom K"unstler `Various Artists'  
+\end{exercise}
+
+\section{Referenzielle Integrit"at}
+\label{sec:refint}
+Im SQL muss man beim Modifizieren und L"oschen aufpassen. Eine "Anderung in der Datenbank kann nicht vorgenommen werden, wenn
+ein Fremdschl"ussel danach ins Leere zeigt. So kann man zum Beispiel in der Tabelle Service nicht pl"otzlich den Service mit der Id 1 l"oschen,
+da dieser in der Tabelle Booking bereits referenziert wird. Wenn man einen referenzierten Datensatz l"oschen m"ochte, muss man s"amtliche
+referenzierende Datensätze auch gleich l"oschen. Die Datenbank kann so eingestellt sein, dass sie dies gleich automatisch tut. Diese Einstellung
+heisst CASCADE. Wir betrachten die Option hier nicht n"aher.
+
+Manchmal m"ochte man die referenzierende Datens"atze gar nicht l"oschen. Es gibt zwei M"oglichkeiten, wie der Datenbankdesigner dies zulassen
+kann. Die erste Option ist das sogenannte SET NULL. Auf diese kann nur zur"uckgegriffen werden, wenn die Referenzspalte leer, bzw. NULL sein
+darf. Wird bei dieser Option ein Datensatz gel"oscht, werden alle Referenzen auf NULL gesetzt. Die zweite M"oglichkeit, wie mit gel"oschten
+Datens"atzen umgegangen werden kann, ist mit dem sogenannten Deleted-Flag. Dies ist eine zus"atzliche Spalte in der Tabelle, welche meistens
+`Deleted' oder "ahnlich heisst und ein BIT
+beinhaltet. Wenn man Daten l"oschen m"ochte, wird in diesem Fall der Datensatz nicht aus der Datenbank entfernt. Statt dessen wird die 
+Deleted Spalte einfach auf 1 gesetzt. Dies muss dann bei der Datenbankabfrage ber"ucksichtigt werden. Wenn wir bei der Tabelle Service ein
+Deleted verwenden w"urden, m"usste man zum Beispiel wie folgt die Anzahl Services z"ahlen:
+  \begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Delete-Flag}] 
+SELECT COUNT(*)
+FROM Service
+WHERE Deleted = 0
+\end{lstlisting} section{Updates}
 Der UPDATE-Befehl funktioniert analog zum SELECT- und zum DELETE-Befehl.  Der einzige Unterschied ist, dass man spezifizieren muss, welche
 Felder wie aktualisiert werden m"ussen. In diesem Beispiel verbessern wir endlich einen Schreibfehler in der urspr"unglichen Datenbank:
  \begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Einfaches Update}] 
@@ -905,9 +1002,11 @@ Man kann auch gleich mehrere Spalten gleichzeitig in der Datenbank bearbeiten. D
 folgendem Beispiel. Anmerkung: Dieser Syntax funktioniert nicht in PL/SQL.
  \begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Update mehrerer Spalten}] 
 UPDATE Service
-SET Name = 'Nur Waschen', DurationMinutes = 25
+SET Name = 'Nur Waschen', DurationMinutes = DurationMinutes - 5
 WHERE ServiceId = 1
 \end{lstlisting} 
+Dieses Skript setzt die Dauer des Services um f"unf Minuten hinunter. Dieser Syntax ist f"ur nichtprogrammierer etwas gew"ohnungsbed"urftig.
+Wenn ein Spaltenname auf der rechten Seite des Gleichs steht, repr"asentiert der Spaltenname den Wert dieser Spalte vor des Updates.  
 \begin{exercise}
 Angenommen, wir erweitern die Tabelle Customer um eine Spalte FullName, welche aus FirstName, LastName und einem Leerzeichen
 besteht. Schreibe eine UPDATE-Skript, welches diese Spalte bef"ullt. Tipp: Um Zeichenketten aneinaderzuh"angen, kann man die SQL-
@@ -940,7 +1039,7 @@ SET t.ArtistName = (
 \begin{exercise}
 Angenommen, wir erweitern die Tabelle Booking um eine Spalte Comment, in welcher Text geschrieben werden kann.
  Schreibe eine UPDATE-Skript, welches diese Spalte mit Vornamen, Nachnamen und Servicenamen bef"ullt.
- Tipp: Wie in der letzten Aufgabe wird hier auch die CONCAT()-Funktion ben"otigt.
+ Tipp: Wie in der letzten Aufgabe wird hier auch die CONCAT()-Funktion ben"otigt. Dazu d"urfen wir annehmen, dass wir MySQL verwenden. 
  \end{exercise}
  \begin{exercise}
 Angenommen, wir erweitern die Tabelle Booking um eine Spalte EndDate, in welcher das Enddatum des Termins geschrieben werden soll.
@@ -958,9 +1057,584 @@ SELECT (CustomerId, Email, 0)
 FROM Customer
 \end{lstlisting} 
 \section{Kapiteltest}
+Wieder arbeiten wir mit der Datenbank aus Tabellen~\ref{tbl:testStart} bis~\ref{tbl:testEnd}.
+\begin{exercise}
+Erstelle ein Skript aus der Tabelle BestellteBier alle Zeilen mit Anzahl gr"osser als 1 l"oscht.
+\end{exercise}
+\begin{exercise}
+Erstelle ein Skript, welch die Bestellung 4 mit s"amtlichen Bestellungsdetails aus der Datenbank l"oscht.
+\end{exercise}
+\begin{exercise}
+Wann darf man Datens"atze aus der Tabelle Bier l"oschen?
+\end{exercise}
+\begin{exercise}
+Die Bestellung 5 wurde falsch erfasst. es wurden nicht drei Bier mit SortimentId 12 und ein Bier mit SortimentId 9 bestellt, sondern je zwei Bier.
+Passe dies mittels SQL-Skript an.
+\end{exercise}
+\begin{exercise}
+Die Preise der Bar mit der Id 2 waren falsch in der Datenbank: Sie sind eigentlich 50 Rappen teurer. Dies wurde beim Kassieren bereits ber"ucksichtigt.
+Erstelle daf"ur ein SQL-Skript.
+\end{exercise}
+\begin{exercise}
+Die Bar mit der Id 2 "andert ihre Preise: Alle Biere werden 50 Rappen teurer. Erstelle daf"ur ein SQL-Skript. Wir d"urfen annehmen, dass die Bar noch
+keine gel"oschte Eintr"age im Sortiment hat. Ausserdem wird die Spalte SortimentId automatisch generiert und muss beim Einf"ugen nicht ber"ucksichtigt
+werden. 
+\end{exercise}
 \chapter{L"osungen}
 \section{Kapitel 1}
+\begin{enumerate}
+\item Wenn die ServiceFk sich "andert, wird ein anderer Service referenziert. Der Service 2 dauert 15 Minuten l"anger als der Service 1 und dauert daf"ur
+15 Minuten l"anger.
+\item Der Prim"arschl"ussel ist ein eindeutiges Merkmal einer Zeile. Wenn wir ServiceId und CustomerId als zusammengesetzten Prim"arschl"ussel 
+verwenden w"urden, d"urfte f"ur ein Kunde ein Service nur genau ein Mal im System erfasst sein. Dies heisst also, dass ein Kunde nicht mehrere Termine
+f"ur einen Service gleichzeitig haben kann. Sogar wenn dies akzeptabel w"are, gibt es jedoch einen anderen Grund, welcher dagegen spricht: Beim n"achsten
+Termin des gleichen Typs m"usste man in der Datenbank die alte Buchung "uberschreiben. Somit w"aren die historischen Daten unbrauchbar.  
+\item Obwohl es in einer Musiksammlung vorkommen kann, dass das Album bei gewissen Tracks nicht bekannt sind, wird dies in dieser Datenbank keine
+Rechnung getragen. Die Spalte AlbumFk ist Teil des Prim"arschl"ussels, und darf somit nicht fakultativ sein, also keine NULL-eintr"age enthalten.
+\item 
+\begin{itemize}
+\item Am 31.12. um 22 Uhr hat Urs in der Vollmond Taverne 2 Brandl"oscher bestellt.
+\item Um 23 Uhr 23 hat Lisa auch in der Vollmond Taverne 2 Brand"oscher und ein Qu"ollfrisch bestellt.
+\item Gleich danach hat Lisa am gleichen Ort noch ein Sprint bestellt.
+\item Um 23 Uhr 52 hat Heinz im Si o No 3 Sprint und ein W"adi-Br"au Blond Premium bestellt.
+\item Am Neujahrstag um 1 Uhr 21 hat Andrea in der Brasserie Federal 3 Qu"ollfrisch und ein Heineken Lager bestellt.
+\end{itemize}
+\item Das Vollmond-Bier kostet im Einkauf 1.30 Franken, und wird in der Vollmond Taverne zu 4 Franken ausgeschenkt. Also wird das Bier zu etwas mehr als
+3 mal dem Einkaufspreis verkauft.
+\item In die Tabellen Bestellung und Bestellte Bier werden folgende Zeilen eingef"ugt:
+\begin{table}[H]
+         \begin{tabular}{|llll|}
+    \hline
+    BestellungId &KundenId & BarId & Zeit        \\ 
+       (PK) &(FK(Kunde.KundenId)) & (FK(Bar.BarId)) &\\ \hline
+    6 &2                  & 3 & 1.1.2015 02:00\\
+   
+    
+     \hline
+    \end{tabular}
+    \caption {Bestellung}
+         \begin{tabular}{|lll|}
+    \hline
+    BestellungFk &SortimentFk & Anzahl        \\ 
+       (PK, FK(Bestellung.& (PK, FK(Sortiment. & \\ 
+              BestellungId)) &SortimentId)) & \\ \hline
+    6&14&2\\
+    
+     \hline
+    \end{tabular}
+    \caption{BestellteBier}
+\end{table}
+\item Wenn der Schl"ussel zusammengesetzt w"are, w"urde eine Bar pro Bier genau einen Preis haben. Auf den ersten Blick macht das Sinn, jedoch nicht
+in Kombination mit der Delete-Spalte. Die Delete-Spalte erm"oglicht es uns, den Preis jedes bestellten Bieres nachzuvollziehen. Diese M"oglichkeit geht jedoch
+verloren, wenn wir nur einen Preis pro Bier und Bar speichern k"onnen.
+\item Eine Spalte BestellteBierId k"onnte man einf"uhren und als alleiniger Prim"arschl"ussel w"ahlen. Die Datenbank w"urde jedoch eine sinnvolle
+Einschi"ankung verlieren. Pro Bestellung k"onnte es n"amlich mehrere Eintr"age mit dem gleichen Bier, bzw. dem gleichen Eintrag im Sortiment geben. Das
+kann gewisse Berechnungen etwas komplexer machen, w"urde jedoch der Funktionalit"at der Datenbank nicht schaden. 
+\end{enumerate}
 \section{Kapitel 2}
+\begin{enumerate}
+\item Es macht durchaus Sinn, wenn man die L"ange einer Zeichenkette einschr"ankt. Einerseits, weil andere L"angen keinen Sinn ergeben. Beispielsweise
+haben die Kantonsk"urzel (z.b. ZH, ZG, SG, etc.) immer genau zwei Buchstaben. Auch gibt es weltweit keine Ortsnamen, welche l"anger als 150 Zeichen lang sind.
+Andererseits kann man somit auf der Datenbank die L"ange gewisser Textgr"ossen einschr"anken. Nicht jeder Text soll beliebig lange sein d"urfen.
+\item In dieser L"osung verzichten wir darauf, Zeichenketten zu beschr"anken. Auch sind andere Formate f"ur die Zeitdauerwerte vorstellbar.
+\begin{itemize}
+\item Customer:\\
+	CustomerId INT \\
+	FirstName VARCHAR(MAX)\\
+	LastName VARCHAR(MAX)\\
+	Email VARCHAR(MAX)
+\item Service:\\
+	ServiceId INT \\
+	Name VARCHAR(MAX)\\
+	DurationMinutes INT
+\item Booking:\\
+	BookingId INT \\
+	ServiceFk INT\\
+	CustomerFk INT\\
+	StartDate DATETIME	
+\end{itemize} 
+\item \begin{itemize}
+\item Album:\\
+	AlbumId INT \\
+	ArtistName VARCHAR(MAX)\\
+	AlbumName VARCHAR(MAX)\\
+	GenreFk INT
+\item Track:\\
+	AlbumFK INT \\
+	TrackId INT\\
+	Name VARCHAR(MAX)\\
+	DurationSeconds INT
+\item Genre:\\
+	GenreId INT \\
+	ParentGenreFk INT\\
+	Name VARCHAR(MAX)	
+\end{itemize}
+\item Bei vielen Zeilen steht es uns frei, ob sie NULL sein d"urfen oder nicht.  
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Erstellen der Tabelle Album}]  
+CREATE TABLE Album (
+	AlbumId INT NOT NULL,
+	ArtistName VARCHAR(200),
+	AlbumName VARCHAR(200),
+	GenreFk INT,
+	CONSTRAINT pk_album PRIMARY KEY 
+		(AlbumId),
+	CONSTRAINT fk_genre FOREIGN KEY (GenreFk)
+		REFERENCES Genre(GenreId)
+);
+\end{lstlisting}
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Erstellen der Tabelle Genre}]  
+CREATE TABLE Genre (
+	GenreId INT NOT NULL,
+	ParentGenreFk INT,
+	Name VARCHAR(MAX),
+	CONSTRAINT pk_genre PRIMARY KEY 
+		(GenreId),
+	CONSTRAINT fk_genre FOREIGN KEY (ParentGenreFk)
+		REFERENCES Genre(GenreId)
+);
+\end{lstlisting}
+\item Bei vielen Zeilen steht es uns frei, ob sie NULL sein d"urfen oder nicht.
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Erstellen der Tabelle Album}]  
+CREATE TABLE Customer (
+	CustomerId INT NOT NULL,
+	FirstName VARCHAR(200),
+	LastName VARCHAR(200),
+	Email VARCHAR(MAX),
+	CONSTRAINT pk_customer PRIMARY KEY 
+		(CustomerId)
+		
+);
+\end{lstlisting}
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Erstellen der Tabelle Genre}]  
+CREATE TABLE Service (
+	ServiceId INT NOT NULL,
+	Name VARCHAR(MAX),
+	DurationMinutes INT NOT NULL,
+	CONSTRAINT pk_service PRIMARY KEY 
+		(ServiceId)
+);
+\end{lstlisting}
+\item  Erstellen der Beispieldaten:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Erstellen der Beispielsdaten}]  
+INSERT INTO Genre (GenreId, ParentGenreId, Name)VALUES (1, NULL, 'Rock'),
+  (2, 1, 'Punk Rock'),
+  (3, NULL, 'Hip-Hop')
+  
+INSERT INTO Album        (AlbumKey, ArtistName, AlbumName, GenreFk)VALUES 
+  (1, 'Red Hot Chilli Peppers', 
+    'Californication', 1),
+  (2, 'The Ramones', 'Rocket To Russia', 2),
+  (3, 'The Beastie Boys', 'Ill Communication', 3)
+  
+INSERT INTO Track        (AlbumFk, TrackId, Name, DurationSeconds)VALUES (3, 1, 'Sure Shot', 200),
+  (1, 1, 'Around the World', 239),
+  (2, 2, 'Rockaway Beach', 127),
+  (1, 4, 'Otherside', 255)
+\end{lstlisting}
+\item So werden die Tabellen erstellt.
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Erstellen der Tabelle Bestellung und BestellteBier}]  
+CREATE TABLE Bestellung (
+	BestellungId INT NOT NULL,
+	KundenFk INT NOT NULL,
+	BarFk INT NOT NULL,
+	Zeit DATETIME,
+	CONSTRAINT pk_bestellung PRIMARY KEY
+		(BesellungId),
+	CONSTRAINT fk_kunde FOREIGN KEY(KundenFk)
+	REFERENCES Kunde(KundenId),
+	CONSTRAIN fk_bar FOREIGN KEY(BarFk)
+	REFERENCES Bar(BarId)
+);
+CREATE TABLE BestellteBier (
+	BestellungFk INT NOT NULL,
+	SortimentFk INT NOT NULL,
+	Anzahl INT NOT NULL,
+	CONSTRAINT pk_bestellte_bier PRIMARY KEY
+		(BesellungFk, SortimentFk),
+	CONSTRAINT fk_bestellung FOREIGN KEY
+	  (BestellungFk) REFERENCES 
+	  Bestellung(BestellungId),
+	CONSTRAINT fk_sortiment FOREIGN KEY
+	(SortimentFk)REFERENCES 
+	 Sortiment(SortimentId)
+);
+\end{lstlisting}
+\item Die Daten werden wie folgt eingef"ugt:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Einf"ugen der Bestellung}]  
+INSERT INTO Bestellung
+  (BestellungId, KundenId, BarId, Zeit)
+ VALUES (6, 2, 3, '2015-1-1 02:00')
+INSERT INTO BestellteBier
+  (BestellungFk, SortimentFk, Anzahl)
+VALUES (6, 14, 2)
+\end{lstlisting}
+
+\end{enumerate}
 \section{Kapitel 3}
+\begin{enumerate}
+\item Die Abfrage sieht wie folgt aus:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Abfrage zu Tabelle~\ref{tbl:exbySolution}}]  
+SELECT LOWER(Name) AS NameLower,
+  DurationMinutes*60*1000 AS DurationMilliseconds
+FROM Service
+\end{lstlisting}
+\item Buchungen sortiert:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Buchungen sortiert}]  
+SELECT *
+FROM Booking
+ORDER BY StartDate DESC
+\end{lstlisting}
+\item Alben sortiert:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Alben sortiert}]  
+SELECT *
+FROM Album
+ORDER BY GenreFk, ArtistName DESC
+\end{lstlisting}
+\item Termine gefiltert:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Termine gefiltert}]  
+SELECT *
+FROM Booking
+WHERE BookingStart > '2014-11-24' 
+  AND BookingStart < '2014-12-01'
+\end{lstlisting}
+\item Termine, welche l"anger als 30 Minuten dauern:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Termine, welche l"anger als 30 Minuten dauern}]  
+SELECT *
+FROM Booking
+WHERE ServiceFk IN (
+  SELECT ServiceId
+  FROM Service
+  WHERE DurationMinutes > 30
+)
+\end{lstlisting}
+\item Erweiterte Tabelle:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Erweiterte Tabelle}]  
+SELECT c.FirstName, c.LastName, s.Name, b.StartDate, 
+  DATEADD(minute, s.DurationMinutes, 
+    b.StartDate) AS EndDateFROM Customer c 
+  INNER JOIN Booking b 
+    ON b.CustomerFk = c.CustomerId
+  INNER JOIN Service s 
+    ON b.ServiceFk = s.ServiceId
+\end{lstlisting}
+\item Selbst-JOIN:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Erweiterte Tabelle}]  
+SELECT g1.Name AS SubGenreName, g2.Name AS ParentGenreName
+FROM Genre g1
+  INNER JOIN Genre g2
+    ON g1.ParentGenreFk = g2.GenreId
+\end{lstlisting}
+\item Die vier Tabellen sehen wie folgt aus:
+\begin{table}[H]
+         \begin{tabular}{|ll|}
+    \hline
+    SubGenreName & GenreName     \\ \hline
+    Punk Rock & Rock\\    
+     \hline
+    \end{tabular}
+    \caption {INNER JOIN}
+        \begin{tabular}{|ll|}
+    \hline
+    SubGenreName & GenreName     \\ \hline
+    Rock & NULL\\
+    Punk Rock & Rock\\
+    Hip-Hop & NULL\\    
+     \hline
+    \end{tabular}
+    \caption {LEFT JOIN}
+          \begin{tabular}{|ll|}
+    \hline
+    SubGenreName & GenreName     \\ \hline
+    Punk Rock & Rock\\
+    NULL & Punk Rock\\
+    NULL & Hip-Hop\\    
+     \hline
+    \end{tabular}
+    \caption {RIGHT JOIN}
+          \begin{tabular}{|ll|}
+    \hline
+    SubGenreName & GenreName     \\ \hline
+    Rock & NULL\\
+    Hip-Hop & NULL\\  
+    Punk Rock & Rock\\
+    NULL & Punk Rock\\
+    NULL & Hip-Hop\\
+     \hline
+    \end{tabular}
+    \caption {FULL OUTER JOIN}    
+\end{table}
+\item Aggregierte Albuml"ange:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Albuml"ange}]  
+SELECT AlbumFk, 
+  SUM(DurationMinutes) AS AlbumLength
+FROM Tracks
+GROUP BY AlbumFk
+\end{lstlisting}
+\item Mit Albumnamen:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Albuml"ange mit Albumnamen}]  
+SELECT a.ArtistName, a.AlbumName, 
+  albumLengths.AlbumLength
+FROM Album a INNER JOIN
+  ( SELECT AlbumFk, 
+      SUM(DurationMinutes) AS AlbumLength
+    FROM Tracks
+    GROUP BY AlbumFk) albumLengths
+  ON a.ArtistId = albumLengths.ArtistFk
+\end{lstlisting}
+\item HAVING-Filter:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Albuml"ange mit HAVING-Filter}]  
+SELECT AlbumFk, 
+   SUM(DurationMinutes) AS AlbumLength
+FROM Tracks
+GROUP BY AlbumFk
+HAVING AVG(DurationMinutes) < 180
+\end{lstlisting}
+\item Zur Repetition: Eine WHERE-Klausel ist ein Filter f"ur die Daten vor der Aggregation. Die HAVING-Klausel
+filtert Daten, nachdem sie aggregiert wurden.
+\begin{itemize}
+\item Die Anzahl Buchungen ist ein aggregierter Wert. Daher steht diese Bedingung in der HAVING-Klausel.
+\item Nach Service muss vor der Aggregation, also im WHERE-Teil gefiltert werden.
+\item HAVING-Klausel
+\item WHERE-Klausel. Zuerst suchen wir die ersten f"unf Tracks des Albums heraus. Der Durchschnitt wird
+anschliessend berechnet.
+\end{itemize}
+\item Bonustrack-Abfrage:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Bonustrack-Abfrage}]  
+SELECT AlbumFk
+FROM Tracks
+GROUP BY AlbumFk
+HAVING COUNT(*) < MAX(TrackId)
+\end{lstlisting}
+\item Tabelle Bar:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Tabelle Bar}]  
+SELECT *
+FROM Bar
+\end{lstlisting}
+
+\item Tabelle Bier:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Bier}]  
+SELECT 
+  LOWER(Name) AS NameLower,
+  Deziliter * 10 AS Milliliter,
+  Einkaufpreis / 1.2 as EinkaufpreisEuro
+FROM Bier
+\end{lstlisting}
+
+\item Flaschengr"ossen:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Flaschengr"ossen}]  
+SELECT DISTINCT Deziliter
+FROM Bier
+\end{lstlisting}
+\item Sortiment nach Bier:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Sortiment nach Bier}]  
+SELECT *
+FROM Sortiment
+ORDER BY BierFk
+\end{lstlisting}
+\item Bier mit Umlaut:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Bier mit Umlaut}, escapechar=\$]  
+SELECT *
+FROM Bier
+WHERE Name LIKE '%$"a$%'
+  OR Name LIKE '%$"o$%'
+  OR Name LIKE '%$"u$%'
+\end{lstlisting}
+\item Biere der Brauerei 1:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Biere der Brauerei 1}, escapechar=\$]  
+SELECT *
+FROM Bier
+WHERE BrauereiFk = 1
+\end{lstlisting}
+\item G"unstige Biere:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={G"unstige Biere}, escapechar=\$]  
+SELECT *
+FROM Bier
+WHERE Einkaufspreis / Deziliter < 0.40
+\end{lstlisting}
+\item Kunde mit Lieblingsbier:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Kunde mit Lieblingsbier}, escapechar=\$]  
+SELECT k.Name, b.Name
+FROM Kunde k LEFT JOIN Bier b 
+  ON k.LieblingsbierFk = b.BierId
+\end{lstlisting}
+\item Kunde mit Lieblingsbier sowie unfavorisierte Biere:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Kunde mit Lieblingsbier sowie unfavorisierte Biere}, escapechar=\$]  
+SELECT k.Name, b.Name
+FROM Kunde k FULL OUTER JOIN Bier b 
+  ON k.LieblingsbierFk = b.BierId
+\end{lstlisting}
+\item Bestellte Bier in lesbarer Form:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Bestellte Bier in lesbarer Form}, escapechar=\$]  
+select k.Name, bi.Name, b.Zeit
+FROM BestellteBier bb
+  INNER JOIN Bestellung b 
+    ON bb.BestellungFk = b.BestellungId
+  INNER JOIN Kunde k
+    ON  b.KundenFk = k.KundenId
+  INNER JOIN Sortiment s
+    ON bb.SortimentFk = s.SortimentId
+  INNER JOIN Bier bi
+    ON s.BierFk = bi.BierId
+\end{lstlisting}
+\item Diese Abfrage ist etwas komplizierter. Hier Joinen wir mit einer Unterabfrage. Die Unterabfrage gruppiert die Bestellungen nach Gesamtpreis. 
+Dazu m"ussen zwei Spalten aus zwei verschiedenen Tabellen zusammen verrechnet und dann aggregiert werden. Dies ist ohne weitere
+Unterabfrage m"oglich.
+
+Die Äussere Abfrage sammelt weitere Informationen zur Bestellung.
+
+Die Innere 
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Bestellungen}, escapechar=\$]  
+SELECT b.KundenFk, b.BarFk, bbGrouped.TotalPrice
+FROM Bestellung b INNER JOIN
+  (SELECT bb.BestellungFk, 
+    SUM(bb.Anzahl * s.Preis) AS TotalPrice
+  FROM BestellteBier bb
+    INNER JOIN Sortiment s
+      ON s.SortimentId = bb.SortimentFk
+  GROUP BY bb.BestellungFK
+  ) bbGrouped
+  ON bbGrouped.BestellungFk = b.BestellungId
+\end{lstlisting}
+\item Wir entdecken, das wir die letzte Aufgabe gr"ostenteils wiederverwenden k"onnen. Die Abfrage wird nun noch etwas komplizierter:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Umsatz pro Bar}, escapechar=\$]  
+SELECT b.BarFk, 
+  SUM(bbGrouped.TotalPrice) AS Neujahrsumsatz
+FROM Bestellung b INNER JOIN
+  (SELECT bb.BestellungFk, 
+    SUM(bb.Anzahl * s.Preis) AS TotalPrice
+  FROM BestellteBier bb
+    INNER JOIN Sortiment s
+      ON s.SortimentId = bb.SortimentFk
+  GROUP BY bb.BestellungFK
+  ) bbGrouped
+  ON bbGrouped.BestellungFk = b.BestellungId
+WHERE b.Zeit > '2014-31-12 18:00' 
+  AND b.Zeit < '2015-01-01 06:00'
+GROUP BY b.BarFK
+\end{lstlisting}
+
+\item Und wieder k"onnen wir die vorhergehende Abfrage wiederverwenden:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Trinkfreudige Kunden}, escapechar=\$]  
+SELECT k.Name
+FROM Kunde k
+INNER JOIN
+( SELECT b.KundenFk, 
+    SUM(bbGrouped.TotalPrice) AS Neujahrsausgaben
+  FROM Bestellung b INNER JOIN
+    (SELECT bb.BestellungFk, 
+      SUM(bb.Anzahl * s.Preis) AS TotalPrice
+    FROM BestellteBier bb
+      INNER JOIN Sortiment s
+        ON s.SortimentId = bb.SortimentFk
+    GROUP BY bb.BestellungFk
+    ) bbGrouped
+  ON bbGrouped.BestellungFk = b.BestellungId
+  WHERE b.Zeit > '2014-31-12 18:00' 
+    AND b.Zeit < '2015-01-01 06:00'
+  GROUP BY b.KundenFk) ka
+ON ka.KundenFk = k.KundenId
+WHERE ka.Neujahrsausgaben > 20
+\end{lstlisting}
+\item Dies ist wieder ein einfacher JOIN mit einem GROUP BY
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={G"unstigster Preis}, escapechar=\$]
+SELECT b.Name, billigBier.BilligPreis
+FROM Bier b
+INNER JOIN
+  (SELECT BierFk, MIN(Preis) AS BilligPreis
+  FROM Sortiment
+  WHERE Deleted = 0
+  GROUP BY BierFk) billigBier
+  ON billigBier.BierFk = b.BierId
+\end{lstlisting}
+\end{enumerate}
+
 \section{Kapitel 4}
+\begin{enumerate}
+\item L"oschen:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={L"oschen von Eintr"agen}, escapechar=\$]
+DELETE 
+FROM Tracks
+WHERE Name LIKE '% '
+\end{lstlisting}
+
+\item L"oschen von 'Various Artists:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={L"oschen von Eintr"agen}, escapechar=\$]
+DELETE t
+FROM Tracks t INNER JOIN
+  Album a ON a.AlbumKey = t.AlbumFk
+WHERE a.ArtistName = 'Various Artists'
+\end{lstlisting}
+\item FullName:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Einf"again eines Kommentars}, escapechar=\$]
+UPDATE Customer c
+SET c.FullName = CONCAT(FirstName, ' ', LastName)
+\end{lstlisting}
+
+\item In MySql:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Einf"again eines Kommentars}, escapechar=\$]
+UPDATE Booking b
+  INNER JOIN Customer c
+    ON c.CustomerKey = b.CustomerFk
+  INNER JOIN Service s
+   ON s.ServiceKey = b.ServiceFk
+SET b.Comment = CONCAT(c.FirstName, ' ',
+    c.LastName, ' ', s.Name)
+\end{lstlisting}
+
+\item Enddatum in MySQL:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Einf"ugen des Enddatums}, escapechar=\$]
+UPDATE Booking b
+  INNER JOIN Service s
+   ON s.ServiceKey = b.ServiceFk
+SET b.startDate = 
+  DATEADD(minute, s.DurationMinutes, b.StartDate)
+\end{lstlisting}
+
+\item L"oschen:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={L"oschen}, escapechar=\$]
+DELETE FROM BestellteBier
+WHERE Anzahl > 1
+\end{lstlisting}
+
+\item L"oschen von zusammenh"angenden Eintr"agen:
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={L"oschen}, escapechar=\$]
+DELETE b, bb FROM BestellteBier bb
+  INNER JOIN Bestellung b
+    ON b.BestellungId = bb.BestellungFk
+WHERE b.BestellungId = 4
+\end{lstlisting}
+\item Um die Referenzielle Integrit"at zu bewahren, darf ein Bier nur dann gel"oscht werden, wenn es nicht referenziert wird.
+In diesem konkreten Fall gibt es zwei Tabellen, welche das Bier referenzieren: Kunden und Sortiment. Dies heisst, dass
+das Bier nicht das Lieblingsbier eines Kunden sein darf, und auch in keinem Sortiment vorkommen darf. Da Sortimentseintr"age
+in dieser Datenbank nicht gel"oscht werden, heisst das, dass das Bier nie in einem Sortiment vorhanden war.
+ 
+ \item Update der Bestellung:
+ \begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Update der Bestellung}, escapechar=\$]
+UPDATE BestellteBier
+SET Anzahl = 2
+WHERE BestellungId = 5
+\end{lstlisting}
+
+ \item R"uckwirkendes update der Preise:
+ \begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={R"uckwirkendes update der Preise}, escapechar=\$]
+UPDATE Sortiment
+SET Preis = Preis + 0.5
+WHERE BarFk = 2
+\end{lstlisting}
+
+ \item Update der Preise:
+ \begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={R"uckwirkendes update der Preise}, escapechar=\$]
+UPDATE Sortiment
+SET Deleted = 1
+WHERE BarFk = 2
+
+INSERT INTO Sortiment 
+  (BarFk, BierFk, Preis, Deleted)
+SELECT(BarFk, BierFk, Preis + 0.50, 0)
+FROM Sortiment
+WHERE BarFk = 2
+\end{lstlisting}
+
+
+\end{enumerate}
 \end{document}
