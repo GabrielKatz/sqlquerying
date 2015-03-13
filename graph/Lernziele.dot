@@ -1,0 +1,37 @@
+digraph C {
+
+	"Relationale Datenbanken" -> "Tabellen generieren"
+	"Relationale Datenbanken" -> "SQL-Grundkenntnisse"
+	"Code-Grundkenntnisse" -> "SQL-Grundkenntnisse"
+	"Code-Grundkenntnisse" -> "Datentypen"
+	"Datentypen" -> "Tabellen Generieren"
+	"SQL-Grundkenntnisse" -> "Tabellen Generieren"
+	"Datentypen" -> "Datensätze einfügen"
+	"SQL-Grundkenntnisse" -> "Datensätze einfügen"
+	"SQL-Grundkenntnisse" -> "Einfache Datenabfrage"
+	"Einfache Datenabfrage" -> "WHERE-Bedingung"
+	"Aussagenlogik" -> "WHERE-Bedingung"
+	"Datentypen" -> "WHERE-Bedingung"
+	"Einfache Datenabfrage" -> "Erweiterte Abfragen im SELECT"
+	"Datentypen" -> "Erweiterte Abfragen im SELECT"
+	"Mathematik" -> "Erweiterte Abfragen im SELECT"
+	"Einfache Datenabfrage" -> "Sortieren"
+	"WHERE-Bedingung" -> "Unterabfragen"
+	"WHERE-Bedingung" -> "JOIN"
+	"Erweiterte Abfragen im SELECT" -> "Gruppieren"
+	"Gruppieren" -> "Gruppieren mit JOIN"
+	"JOIN" -> "Gruppieren mit JOIN"
+	"WHERE-Bedingung" -> "Löschen"
+	"JOIN" -> "Löschen mit JOIN"
+	"Löschen" -> "Löschen mit JOIN"
+	"SQL-Grundkenntnisse" -> "UPDATE"
+	"WHERE-Bedingung" -> "UPDATE"
+	"JOIN" -> "Erweitertes UPDATE"
+	"UPDATE" -> "Erweitertes UPDATE"
+	"Datensätze einfügen" -> "Einfügen mit Abfragen"
+	"Erweiterte Abfragen im SELECT" -> "Einfügen mit Abfragen"
+	subgraph clusterVorkenntnisse {
+		 graph [bgcolor="grey89"];
+		 "Mathematik", "Aussagenlogik", "Code-Grundkenntnisse"
+	}
+}

@@ -75,13 +75,13 @@ NoSQL-Datenbanken, doch auch f"ur diese sind Kenntnisse in relationalen Datenban
 Diese Unterlagen besch"aftigen sich mit SQL, der Standardsprache in relationalen Datenbanken. Den Rest 
 dieses Kapitels werden wir mit den relationalen Datenbanken und deren Aufbau besch"aftigen. Kapitel 2 erkl"art was
 SQL ist, und zeigt, wie man eine Datenbank in SQL erstellt. Kapitel 3 ist das Kernkapitel dieser Unterlagen und erkl"art
-ausf"ehrlich, wie man Daten in SQL abfragt. Schliesslich sehen wir in Kapitel 4, wie man die Anfragetechniken verwendet,
+ausf"uehrlich, wie man Daten in SQL abfragt. Schliesslich sehen wir in Kapitel 4, wie man die Anfragetechniken verwendet,
 um Daten in SQL zu manipulieren.
 
-Wir arbeiten in dieser Unterrichtseinheit mit 3 verschiedenen Datenbankbeispiele. In den Kapitel selbst verwenden wir zwei
+Wir arbeiten in dieser Unterrichtseinheit mit 3 verschiedenen Datenbankbeispielen. In den Kapitel selbst verwenden wir zwei
 minimale Datenbanken, welche nur 3 Tabellen beinhalten. Die Kapiteltests bearbeiten ein etwas gr"osseres Datenbankmodell.
 
-SQL verf"ugt "uber sehr viele Funktionen, um mit den internen Datentypen zu transformieren. Beispielsweise gibt es eine
+SQL verf"ugt "uber sehr viele Funktionen, um Berechnungen mit den internen Datentypen durchzuf"uhren. Beispielsweise gibt es eine
 Funktionsbibliothek, um Zeitdaten zu vergleichen und zu berechnen. Da diese Unterlagen sich nicht als SQL-Referenz versteht, 
 werden solche Funktionen nur dann eingef"uhrt, wenn sie verwendet werden.
 \section{Relationale Datenbanken}
@@ -90,20 +90,20 @@ namens ``A Relational Model of Data for Large Shared Data Banks''. Dort schlug e
 \textbf{Tabellen} darzustellen. Dies Tabellen haben einen Namen und mehrere \textbf{Spalten}. Eine Spalte einer 
 Tabelle ist durch seinen Namen, seinen Datentyp, und ob sie obligatorisch oder fakultativ ist, definiert. Datentypen 
 dr\"{u}cken aus, welche Art von Daten in der Spalte gespeichert werden kann. Beispielsweise hat eine Spalte, in 
-welcher ein Datum gespeichert wir einen anderen Datentypen wie eine Spalte mit Zahl oder wie eine Spalte mit Text. 
-Wir werden die Datentypen in SQL im n\"{a}chsten Kapitel etwas mehr im Detail betrachten. \\
+welcher ein Datum gespeichert wird einen anderen Datentypen wie eine Spalte mit Zahl oder wie eine Spalte mit Text. 
+Wir werden einige Datentypen, welche von SQL unterst"utzt werden im n\"{a}chsten Kapitel etwas mehr im Detail betrachten. \\
 Die Daten werden 
 dann in den \textbf{Zeilen} der Tabelle gespeichert. Jede Zeile der Tabelle enth\"{a}lt mindestens in allen 
 obligatorischen Spalten Daten. Wenn eine Zeile in einer Spalte keine Daten hat, sagt man auch, dass sie NULL enth"alt.
  Normalerweise ist die Anzahl der Spalten der Tabelle (des Datenschemas) 
 \"{u}berschaubar, wogegen die Anzahl der Zeilen riesig sein kann. \\
 Eine Tabelle in einer relationalen Datenbank hat immer ein Merkmal, an welchem die Zeilen der Tabellen eindeutig
-identifiziert werden können. Dieses Merkmal wird \textbf{Prim\"arschl\"ussel (PK)} genannt. Dieser Prim\"arschl\"ussel 
+identifiziert werden k"onnen. Dieses Merkmal wird \textbf{Prim\"arschl\"ussel (PK)} genannt. Dieser Prim\"arschl\"ussel 
 besteht h\"aufig aus einer einzelnen Tabellenspalte, doch er kann auch aus mehreren Tabellenspalten bestehen.
 In diesem Fall spricht man von einem \textbf{zusammengesetzten} Schl\"ussel. Keines der Tabellenspalten des Prim"arschl"ussels 
 darf fakultativ sein.  H\"aufig ist der Prim\"arschl\"ussel eine
-Spalte, welche nicht eigentliche Daten enth\"alt, sondern nur ein Kennzeichen. In den hier gezeigten Beispielen ist der 
-Prim\"arschl\"ussel fast immer ein Zahlwort, doch dies muss nicht immer so sein.\\
+Spalte, welche nicht eigentliche Daten enth\"alt, sondern nur ein Kennzeichen, zum Beispiel eine Zahl. In den hier gezeigten Beispielen ist der 
+Prim\"arschl\"ussel fast immer eine Zahl, doch dies muss nicht immer so sein.\\
 Die Kernidee hinter den relationalen Datenbanken, ist, dass diese Tabellen verbunden sind. Doch wie sieht eine 
 derartige Verbindung aus? Hier kommen die sogenannten \textbf{Fremdschl\"ussel (FK)} ins Spiel. Ein Fremdschl\"ussel
 besteht aus einer oder mehreren Spalten einer Tabelle, welche den Prim\"arschl\"ussel einer anderen Tabelle 
@@ -141,52 +141,37 @@ nicht behandeln.\\
 \end{table}
 
 Tabellen~\ref{tbl:firstExampleStart} bis~\ref{tbl:firstExampleEnd} zeigen ein Beispiel f\"ur eine einfache Datenbank, wie 
-sie in einem Buchungssystem eines Friseursalons vorstellbar ist. In der Tabelle $Customer$ sind die Kundeninformation 
+sie in einem Buchungssystem eines Friseursalons vorstellbar ist. In der Tabelle Customer sind die Kundeninformation 
 aufgelistet. \"Andert sich beispielsweise die Emailadresse eines Kunden, muss diese lediglich an einer Stelle, n\"amlich 
-in der entsprechenden Spalte der $Customer$-Tabelle angepasst werden. Wir sehen hier, dass der Prim\"arschl\"ussel, 
-das Feld $CustomerId$, keine eigentlichen Information zum Benutzer enth\"alt. Doch wieso wurde dieses Feld 
-eingef\"uhrt? Betrachten wir die Alternativen f\"ur den Prim\"arschl\"ussel: Wenn die Spalte $Email$ Prim\"arschl\"ussel
+in der entsprechenden Spalte der Customer-Tabelle angepasst werden. Wir sehen hier, dass der Prim\"arschl\"ussel, 
+das Feld CustomerId, keine eigentlichen Information zum Benutzer enth\"alt. Doch wieso wurde dieses Feld 
+eingef\"uhrt? Betrachten wir die Alternativen f\"ur den Prim\"arschl\"ussel: Wenn die Spalte Email Prim\"arschl\"ussel
 w\"are, entst\"anden zwei Nachteile. Einerseits k\"onnten die Kunden ihre Mailadresse nicht mehr wechseln, da sonst
 das eindeutige Merkmal der Kundenzeile verloren gehen w\"urde. Andererseits k\"onnen keine zwei Benutzer die gleiche
-Mailadresse teilen. Die Spalten $FirstName$ und $LastName$ sind nicht eindeutig, und k"onnen somit nicht als 
+Mailadresse teilen. Die Spalten FirstName und LastName sind nicht eindeutig, und k"onnen somit nicht als 
 Prim\"arschl\"ussel (auch zusammengenommen nicht) gew\"ahlt werden. Es g\"abe noch die M"oglichkeit, die 
-Kombination $FirstName$, $LastName$ und $Email$ als Prim\"arschl\"ussel zu w\"ahlen, doch zugunsten der 
-Mutabilit\"at der Daten entscheidet man meistens gegen derart komplexe Prim\"arschl\"ussel und f\"uhrt lieber eine 
+Kombination FirstName, LastName und Email als Prim\"arschl\"ussel zu w\"ahlen, doch wieder g"abe es das Problem,
+dass man die Daten nicht mehr "andern darf. Daher verzichtet man auf komplexe Prim\"arschl\"ussel und f\"uhrt lieber eine 
 weitere Zeile ein.
 
-Bei der Tabelle $Service$ verh\"alt es sich gleich wie bei der $Customer$-Tabelle: Da die anderen Spalten sich \"andern 
+Bei der Tabelle Service verh\"alt es sich gleich wie bei der Customer-Tabelle: Da alle anderen Spalten sich \"andern 
 k\"onnen, und eventuell nicht eindeutig sind, wurde eine zus\"atzliche Spalte f\"ur den Prim\"arschl\"ussel eingef\"uhrt,
 
-Die $Booking$-Tabelle hat zwei Fremdschl\"ussel: Die Spalte $ServiceFk$ referenziert die Spalte $ServiceId$ der Tabelle 
-$Service$, und die Spalte $CustomerFk$ referenziert die Spalte $CustomerId$ der Tabelle $Customer$. Der erste Eintrag
-in der Booking-Tabelle bedeutet also, dass Ferdinand Meier (der Kunde mit der $CustomerId$ 3) am 21. November 2014
-um 10:30 einen 45-minutigen Termin zum Haare waschen und schneiden hat (der Service mit der $ServiceId$ 1).
+Die Booking-Tabelle hat zwei Fremdschl\"ussel: Die Spalte ServiceFk referenziert die Spalte ServiceId der Tabelle 
+Service, und die Spalte CustomerFk referenziert die Spalte CustomerId der Tabelle Customer. Der erste Eintrag
+in der Booking-Tabelle bedeutet also, dass Ferdinand Meier (der Kunde mit der CustomerId 3) am 21. November 2014
+um 10:30 einen 45-minutigen Termin zum Haare waschen und schneiden hat (der Service mit der ServiceId 1).
 
 In diesem 
-Beispiel enden Spalten, welche andere Tabellen referenzieren auf $-Fk$, und Prim\"arschl\"ussel auf $-Id$. Es handelt 
-sich hierbei um eine Namenskonvention des Autoren. Andere Namen sind durchaus denkbar.
+Beispiel enden Spalten, welche andere Tabellen referenzieren auf -Fk, und Prim\"arschl\"ussel auf -Id. Es handelt 
+sich hierbei um eine \textbf{Namenskonvention}, an welche in allen Beispielen dieser Unterlagen verwendet wird.
  
  \begin{exercise}\label{ex:changeFK}
-Was bedeutet es, wenn beim Eintrag mit der $BookingId$ 2 der $ServiceFK$ von 1 auf 2 ge\"andert wird?
+Was bedeutet es, wenn beim Eintrag mit der BookingId 2 der ServiceFK von 1 auf 2 ge\"andert wird?
 \end{exercise}
  \begin{exercise}\label{ex:noComposedKey}
-Wieso sollten die Spalten $ServiceId$ und $CustomerId$ keinen zusammengesetzten Prim\"arschl\"ussel f\"ur die 
-Tabelle $Booking$ bilden?
-\end{exercise}
-
-Wir betrachten noch ein Beispiel f"ur eine Datenbank. Tabellen Tabellen~\ref{tbl:secondExampleStart} 
-bis~\ref{tbl:secondExampleEnd}  sind Teil einer Musikbibliotheksdatenbank. In diesem Beispiel kommt ein 
-zusammengesetzter Prim"arschl"ussel vor. Da der Track eines Albums durch das Album und der Tracknummer eindeutig 
-gegeben ist, und die Tracknummer und das Album sich nie mehr "andert, eignet sich diese Kombination hervorragend
-als zumsammengesetzten Prim"arschl"ussel.
-
-Ein weiteres h"aufiges Muster, dass bei relationalen Datenbanken vorkommt, ist bei der Genre-Tabelle zu finden. Wir sehen,
-dass die $ParentGenreFk$ die eigene Tabelle referenziert. Im Beispiel ist $Punk Rock$ ein Subgenre von $Rock$. Wir stellen 
-ausserdem fest, dass gewisse Genres einen $NULL$-eintrag beim Feld $ParentGenreFk$ haben. Dies ist die Notation, welche
-besagt, dass dieses Feld f"ur einen Eintrag nicht verwendet wird. Eine Zeile kann nur in als fakultativ deklarierten Spalten $NULL$-eintr"age
-haben.
- \begin{exercise}\label{ex:NULL}
-K"onnte in der Spalte $AlbumFk$ der Tabelle $Track$ leer sein? Wieso bzw. wieso nicht?
+Wieso sollten die Spalten ServiceId und CustomerId keinen zusammengesetzten Prim\"arschl\"ussel f\"ur die 
+Tabelle Booking bilden?
 \end{exercise}
 \begin{table}
     \begin{tabular}{|llll|}
@@ -219,6 +204,21 @@ K"onnte in der Spalte $AlbumFk$ der Tabelle $Track$ leer sein? Wieso bzw. wieso 
     \caption {Genre}
     \label{tbl:secondExampleEnd}
 \end{table}
+
+Wir betrachten noch ein Beispiel f"ur eine Datenbank. Tabellen~\ref{tbl:secondExampleStart} 
+bis~\ref{tbl:secondExampleEnd}  sind Teil einer Musikbibliotheksdatenbank. In diesem Beispiel kommt in der Tabelle Track
+ein zusammengesetzter Prim"arschl"ussel vor. Da der Track eines Albums durch das Album und der Tracknummer eindeutig 
+gegeben ist, und die Tracknummer und das Album sich nie mehr "andert, eignet sich diese Kombination hervorragend
+als zumsammengesetzten Prim"arschl"ussel.
+
+Ein weiteres h"aufiges Muster, dass bei relationalen Datenbanken vorkommt, ist bei der Genre-Tabelle zu finden. Wir sehen,
+dass die ParentGenreFk die eigene Tabelle referenziert. Im Beispiel ist Punk Rock ein Subgenre von Rock. Wir stellen 
+ausserdem fest, dass gewisse Genres einen NULL-eintrag beim Feld ParentGenreFk haben. Dies ist die Notation, welche
+besagt, dass dieses Feld f"ur einen Eintrag nicht verwendet wird. Eine Zeile kann nur in als fakultativ deklarierten Spalten NULL-eintr"age
+haben.
+ \begin{exercise}\label{ex:NULL}
+K"onnte Eintr"age in der Spalte AlbumFk der Tabelle Track leer sein? Wieso bzw. wieso nicht?
+\end{exercise}
 
 Die zwei Datenbanken, welche wir in diesem Kapitel betrachteten, werden uns im auch in den n"achsten Kapitel besch"aftigen, und
 alle "Ubungen bis auf die Schlusspr"ufung wird sich mit diesen Beispielen befassen. 
@@ -407,10 +407,11 @@ Zeichenketten.
 
 \subsection{Zahlwerte}
 Ein \textbf{BIT} kann nur entweder 0 (false) oder 1 (true) sein. Dieser Datentyp ist ideal f"ur Antworten auf Ja/Nein-Fragen, welche nicht
-nur in der Informatik h"affig auftreten.
+nur in der Informatik h"aufig auftreten.
 Ein \textbf{INT} ist eine Ganzzahl. Es gibt verschiedene Variationen davon f"ur verschiedene gr"ossen (\textbf{SMALLINT}, \textbf{BIGINT}, etc.),
 doch das Grundprinzip ist das Gleiche. In den vorhergehenden Beispielen wurden $INT$s vor allem f"ur Schl"ussel verwendet.
-Ein \textbf{FLOAT} ist eine Gleitkommazahl. Dies heisst, dass diese Zahl fast beliebig gross oder klein sein kann.
+Ein \textbf{FLOAT} ist eine Gleitkommazahl. Dies heisst, dass diese Zahl fast beliebig gross oder klein sein kann, und Stellen nach dem Komma
+aufweisen darf.
 Ein \textbf{DECIMAL(p,s)} ist eine Zahl mit $p$ Ziffern insgesamt, davon $s$ nach dem Komma. Dies heisst, dass z.B. $41.46$ als 
 \textbf{DECIMAL(4,2)} gespeichert werden kann, jedoch wird $31.8734$ auf $31.87$ gerundet, und Werte "uber $99.99$ k"onnten gar
 nicht erst gespeichert werden. $DECIMAL$ wird h"aufig f"ur finanzielle Daten (Kosten, Preise, etc.) verwendet. 
@@ -458,6 +459,17 @@ CREATE TABLE Booking (
 	
 );
 \end{lstlisting}
+Da dies der erste SQL-Code in diesen Unterlagen ist, zuerst einige Bemerkungen: Wie in vielen Programmiersprachen d"urfen bei Leerschl"sagen
+beliebig viele weitere Leerschl"age oder Zeilenumbr"uche geschrieben werden. Man k"onnte auch diesen Code auf eine Zeile packen, oder jedes 
+Wort dieses codes auf eine separate Zeile legen. In diesem Buch ist der Code mit etwas mehr Zeilenumbr"uchen versehen als sonst in der Praxis
+"ublich, damit die Lesbarkeit auf Papier einfacher wird. In den Beispielen werden Zeilen, welche sich auf die Vorzeile beziehen einger"uckt, um eine
+"Ubersicht "uber den Code zu schaffen. Dies ist eine g"angige Praxis in allen Programmiersprachen.
+
+Wir sehen in diesem Codebeispiel, dass gewisse Worte in Grossbuchstaben geschrieben sind. Das sind die SQL-Schl"usselw"orter. SQL 
+unterscheidet eigentlich gar nicht zwischen Klein-und Grossbuchstaben. SQL ist also \textbf{case-insensitive} (Es gibt jedoch Ausnahmen, wie
+zum Beispiel der Textvergleich von Datens"atzen). Es hat sich jedoch eingeb"urgert SQL-Schl"usselw"orter in Grossbuchstaben zu schreiben. 
+Dem wird auch in diesen Unterlagen Folge geleistet.
+
 Die erste Zeile beschreibt, was wir tun wollen, n"amlich eine Tabelle erstellen. Die folgenden Felder sind die Spalten der Tabelle. Zuerst wird
 jeweils der Name der Spalte geschrieben, dann der Datentyp. Wenn eine Spalte nicht leer sein darf, dann wird dies mit NOT NULL
 gekennzeichnet. In unserem Beispiel d"urfen auch Buchungen get"atigt werden, bei welchen der Kunde fehlt, da er zum Beispiel nicht 
@@ -501,7 +513,7 @@ In diesem Beispiel sehen wir auch, wie wir in SQL mit Datentypen umgehen m"ussen
 anderen Datentypen, also Zeitdaten und Zeichenketten schreiben wir mit Hochkommas. Zeitdaten werden normalerweise im Format 
 yyyy-MM-dd HH:mm(:ss), also zuerst Jahr, dann Monat, anschliessend Tag geschrieben.
 
-Wir k"onnen auch gleich mehrere Daten"atze in einem Befehl in eine Tabelle einf"ugen. Daf"ur muss man die verschiedenen Datens"atze mit Komma 
+Wir k"onnen auch gleich mehrere Datens"atze in einem Befehl in eine Tabelle einf"ugen. Daf"ur muss man die verschiedenen Datens"atze mit Komma 
 voneinander trennen:
 
 \begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Einf"ugen mehrerer Datens"atze}]  
@@ -511,7 +523,17 @@ VALUES (4, 1, 3, '2014-11-21 10:30'),
        (5, 2, 2, '2014-11-26 14:45')
 \end{lstlisting}
 In der Praxis ist es h"aufig der Fall, dass Spalten wie BookingKey automatisch generiert werden. Wie man in der Datenbank spezifiziert, dass ein Feld
-automatisch generiert werden soll, variiert von System zu System. Daher gehen wir hier nicht n"aher darauf ein.
+automatisch generiert werden soll, variiert von System zu System. Daher gehen wir hier nicht n"aher darauf ein. Wenn eine Spalte freiwillig ist, oder
+automatisch generiert wird, dann muss man die Spalte im INSERT-Statement nicht angeben. Wenn wir also wissen, dass der BookingKey automatisch
+generiert wird, reicht auch schon folgendes zum Einf"ugen der beiden Datens"atze:
+
+
+\begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Einf"ugen mit automatisch generiertem Feld}]  
+INSERT INTO Booking 
+	(ServiceFk, CustomerFk, StartDate)
+VALUES (1, 3, '2014-11-21 10:30'),
+       (2, 2, '2014-11-26 14:45')
+\end{lstlisting}
 
 Wenn man Daten in SQL-Tabellen einf"ugt, m"ussen die Referenzen existieren. Wenn wir versuchen w"urden, eine Buchung mit CustomerFk 4 einzuf"ugen,
 w"urden wir einen Fehler zur"uckerhalten, selbst wenn wir in der n"achten Zeile den Kunden mit der CustomerId 4 erstellen w"urden. Die 
@@ -602,7 +624,7 @@ FROM Track t
 ORDER BY AlbumFk DESC, Name
 \end{lstlisting} 
 
-\begin{table}
+\begin{table}[H]
 	\begin{tabular}{|llll|}    \hline
     AlbumFk (PK, FK) & TrackId   (PK)  & Name & Duration \\ \hline
     3		& 1 & Sure Shot       & 3:20    \\
@@ -611,6 +633,7 @@ ORDER BY AlbumFk DESC, Name
     1         	& 4 & Otherside        & 4:15    \\ \hline
     \end{tabular} 
     \caption{Tracks nach Album und Namen sortiert}
+    \label{tbl:orderby}
 \end{table}
 \begin{exercise}
 Sortiere die Buchungen von Buchungen absteigend nach Termin.
@@ -642,12 +665,13 @@ FROM Track t
 WHERE DurationSeconds > 4*60 AND TrackId <> 1
 \end{lstlisting} 
 \begin{exercise}
-Frage alle Termine in der Woche vom 24. bis 30. November 2014 ab.
+Frage alle Termine in der Woche vom 24. bis 30. November 2014 ab. Bemerkung: Daten kann man gleich wie Zahlen mit den Symbolen
+kleiner als (<) und gr"osser als (>) vergleichen. 
 \end{exercise}
 \subsection{Textvergleich}
 Bei Textfelder gibt es die M"oglichkeit, nach Teilstrings zu filtern. Mit dem Schl"usselwort LIKE kann man nach Anfang, Ende oder innerer Teil filtern. 
-Das \%-Zeichen dient dabei als Wildcard. Kommt es nur nach dem Suchtext vor, so wird der Text nach dem Anfang gefiltert, kommt es nur vor dem 
-Suchtext vor, so wird nach dem Ende gefiltert. Wenn das \%-Zeichen auf beiden Seiten des Suchtexts steht, so darf der Suchtext an einer beliebigen 
+Das \%-Zeichen dient dabei als Wildcard. Kommt es nur nach dem Suchtext vor (`Text\%'), so wird der Text nach dem Anfang gefiltert, kommt es nur vor dem 
+Suchtext vor, so wird nach dem Ende gefiltert (`\%Text'). Wenn das \%-Zeichen auf beiden Seiten des Suchtexts steht, so darf der Suchtext an einer beliebigen 
 Stelle vorkommen. In diesem Beispiel filtern wir nach Lieder, deren Name mit ``Sure'' anfangen 
 \begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Textvergleich mit LIKE}] 
 SELECT *
@@ -711,11 +735,13 @@ WHERE AlbumFk IN (
 \begin{exercise}
 Erstelle eine Abfrage, welche alle Buchungen zur"uckgibt, deren Service l"anger als 30 Minuten dauert.
 \end{exercise}
-\section{verschiedene JOINs}
+\section{Verschiedene JOINs}
 \subsection{INNER JOIN}
 Bisher haben alle unsere Datenbankabfragen nur Werte aus einer Tabelle zur"uckgegeben. Doch wirklich m"achtig wird SQL erst, wenn wir
-Tabellen zusammenf"ugen. Dies geschieht mit INNER JOIN. Die INNER JOIN-Klausel kommt im WHERE-Teil der Abfrage zum Einsatz, und f"ugt
-jeweils zwei Tabellen zusammen. Zum Beispiel erstellen wir so f"ur den Fris"or eine Ansicht, bei welchem er den Namen des Kunden 
+Tabellen zusammenf"ugen. Dies geschieht zum Beispiel mit INNER JOIN. Die INNER JOIN-Klausel kommt im FROM-Teil der Abfrage zum 
+Einsatz, und f"ugt jeweils zwei Tabellen zusammen. Zu einem JOIN-Befehl geh"ort immer auch ein ON-Befehl, welcher beschreibt, unter welcher
+Bedingung zwei Datens"atze zusammengef"ugt werden. 
+Zum Beispiel erstellen wir so f"ur den Fris"or eine Ansicht, bei welchem er den Namen des Kunden 
 und der Zeitpunkt des Termins sieht:
 \begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Einfacher INNER JOIN}, label={lst:firstjoin}] 
 SELECT c.FirstName, c.LastName, b.StartDate
@@ -736,9 +762,7 @@ FROM Customer c INNER JOIN Booking b
 \end{table}
 Das Resultat dieser Abfrage ist in Tabelle zu sehen. Dabei k"onnen Eintr"age von gewissen Tabellen mehrfach auftreten. In unserem Beispiel
 taucht Ferdinand Meier in zwei Eintr"agen auf. Beim INNER JOIN spielt es, im Gegensatz zu anderen JOINS, welche wir sp"ater sehen werden,
-keine Rolle, welche Tabelle links und welche rechts des JOINs steht.
-
-So k"innen wir auch mehrere INNER JOINS aneinanderreihen, um beliebig viele Tabellen zusammenf"ugen. Daf"ur hier ein Beispiel, bei welchem
+keine Rolle, welche Tabelle links und welche rechts des JOINs steht. So k"onnen wir auch mehrere INNER JOINS aneinanderreihen, um beliebig viele Tabellen zusammenf"ugen. Daf"ur hier ein Beispiel, bei welchem
 in der Musikdatenbank s"amtliche Informationen zu den Tracks zusammengetragen werden.
 \begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Mehrere INNER JOINs}] 
 SELECT t.Name as TrackName, a.ArtistName, 
@@ -762,7 +786,7 @@ m"ochte. Daf"ur ist der OUTER JOIN. Ein LEFT, bzw. ein RIGHT OUTER JOIN stellt s
 des Schl"usselworts mindestens einmal auftritt. Ein FULL OUTER JOIN stellt sicher, dass jeder Eintrag beider Tabellen vorkommt. Wenn man 
 bei der Abfrage zu Tabelle~\ref{tab:firstjoin} das INNER JOIN durch ein LEFT OUTER JOIN ersetzen w"urde, so erh"alte man 
 Tabelle~\ref{tab:outerjoin}.
-\begin{table}
+\begin{table}[H]
     \begin{tabular}{|lll|}
     	\hline
     	FirstName &LastName & StartDate        \\ 
@@ -825,11 +849,11 @@ FROM Booking b INNER JOIN Service s
 GROUP BY b.ServiceFk
 \end{lstlisting}
 Jetzt stellt sich die Frage, was beim Fragezeichen stehen sollte. Da s.Name noch kein Gruppierungsfeld ist, m"usste es aggregiert werden.
-Es gibt hier 3 m"oglichkeiten, weiterzufahren. Alle m"oglichkeiten f"uhren zum Ziel, doch die letzte ist zu bevorzugen. 
+Es gibt hier 3 M"oglichkeiten, weiterzufahren. Alle M"oglichkeiten f"uhren zum Ziel, doch die letzte ist zu bevorzugen. 
 \begin{enumerate}
 \item Wir verwenden einfach eine Aggregierung, welche etwas Sinnvolles zur"uckliefert, wie zum Beispiel MAX(s.Name). Dies funktioniert,
 da Zeichenketten in SQL auch geordnet werden k"onnen, und das Maximum von gleichen Werten den gleichen Wert hat. Dennoch ist diese
-L"osung eher ein Hack, den f"ur andere schwer verst"andlich ist.
+L"osung eher ein Hack, der f"ur Nichteingeweihte schwer verst"andlich ist.
 \item Wir gruppieren einfach auch nach s.Name. Auch diese L"osung funktioniert einwandfrei. Da alle Eintr"age mit dem gleichen ServiceFk
 den gleichen Servicenamen haben, macht diese zus"atzliche Gruppierung nichts Sichtbares. Diese L"osung macht jedoch in den meisten
 Datenbankengines die Abfrage ineffizient, und ist auch unsch"on, da nach so wenig Felder wie m"oglich gruppiert werden soll.
@@ -859,7 +883,7 @@ FROM Booking
 WHERE StartDate > '2014-11-24'
 GROUP BY ServiceFk
 \end{lstlisting}
-Es gibt jedoch auch die m"oglichkeit, "uber Aggregationen zu filtern. Dies geschieht mit der HAVING-Klausel. Diese zus"atzliche Filterung steht 
+Es gibt jedoch auch die M"oglichkeit, "uber Aggregationen zu filtern. Dies geschieht mit der HAVING-Klausel. Diese zus"atzliche Filterung steht 
 nach der GROUP BY-Klausel. In diesem Beispiel suchen wir alle Services, welche ab dem 24. November genau ein mal gebucht wurden:
 \begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Filtern vor und nach Gruppierung}] 
 SELECT ServiceFk, COUNT(*)
@@ -990,7 +1014,8 @@ Deleted verwenden w"urden, m"usste man zum Beispiel wie folgt die Anzahl Service
 SELECT COUNT(*)
 FROM Service
 WHERE Deleted = 0
-\end{lstlisting} section{Updates}
+\end{lstlisting}
+\section{Updates}
 Der UPDATE-Befehl funktioniert analog zum SELECT- und zum DELETE-Befehl.  Der einzige Unterschied ist, dass man spezifizieren muss, welche
 Felder wie aktualisiert werden m"ussen. In diesem Beispiel verbessern wir endlich einen Schreibfehler in der urspr"unglichen Datenbank:
  \begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Einfaches Update}] 
@@ -1002,7 +1027,8 @@ Man kann auch gleich mehrere Spalten gleichzeitig in der Datenbank bearbeiten. D
 folgendem Beispiel. Anmerkung: Dieser Syntax funktioniert nicht in PL/SQL.
  \begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={Update mehrerer Spalten}] 
 UPDATE Service
-SET Name = 'Nur Waschen', DurationMinutes = DurationMinutes - 5
+SET Name = 'Nur Waschen', 
+  DurationMinutes = DurationMinutes - 5
 WHERE ServiceId = 1
 \end{lstlisting} 
 Dieses Skript setzt die Dauer des Services um f"unf Minuten hinunter. Dieser Syntax ist f"ur nichtprogrammierer etwas gew"ohnungsbed"urftig.
@@ -1615,7 +1641,7 @@ SET Anzahl = 2
 WHERE BestellungId = 5
 \end{lstlisting}
 
- \item R"uckwirkendes update der Preise:
+ \item R"uckwirkendes Update der Preise:
  \begin{lstlisting}[frame=single, language=SQL, style=SQL, caption={R"uckwirkendes update der Preise}, escapechar=\$]
 UPDATE Sortiment
 SET Preis = Preis + 0.5
