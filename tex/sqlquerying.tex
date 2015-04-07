@@ -416,8 +416,8 @@ Spaltennamen der Tabelle erw"ahnen, damit er nicht vergessen wird. Bei der Tabel
 nicht interessieren).
 \subsection{Zeichenketten}
 F"ur Zeichenketten gibt es zwei verschiedene Formate:
-\textbf{\lstinline{CHAR(l)}} ist eine Zeichenkette mit fixer L"ange $l$.\\
-\textbf{\lstinline{VARCHAR(l)}} ist eine Zeichenkette mit H"ochstl"ange $l$.\\
+\textbf{\lstinline{CHAR(l)}} ist eine Zeichenkette mit fixer L"ange \lstinline{l}.\\
+\textbf{\lstinline{VARCHAR(l)}} ist eine Zeichenkette mit H"ochstl"ange \lstinline{l}.\\
 
 \begin{exercise}
 Wieso w"ahlt man bei Zeichenketten nicht immer ein \lstinline{VARCHAR} mit sehr grosser H"ochstl"ange? Dies w"urde doch in jedem Fall funktionieren. 
@@ -649,7 +649,7 @@ Finde eine Datenabfrage "uber die bestehenden Tabellen, welche die Werte aus Tab
 
 \end{exercise}
 
-\section{Sortieren mit ORDER BY}
+\section{Sortieren mit \lstinline{ORDER BY}}
 Grunds"atzlich ist das Resultat einer SQL-Abfrage ungeordnet. Zwar werden in Praxis die Resultate in den meisten Datenbank-Engines nach 
 Prim"arschl"ussel geordnet, doch davon kann man nicht immer ausgehen. Daher existiert die \lstinline{ORDER BY}-Klausel, mit welcher man bestimmen kann, 
 nach welchen Spalten das Resultat geordnet wird. Diese Spalten m"ussen dabei gar nicht unbedingt im Resultat vorkommen. Die Datenbankengine
@@ -681,7 +681,7 @@ Sortiere die Buchungen von Buchungen absteigend nach Termin.
 Sortiere die Alben nach Genre, und dann absteigend nach K"unstlername.
 \end{exercise}
 
-\section{WHERE-Bedingungen}
+\section{\lstinline{WHERE}-Bedingungen}
 Wie wir bereits erw"ahnt haben, k"onnen Tabellen in SQL riesig werden. Um den "Uberblick zu behalten, m"ochte man meistens nur einen Teil der
 Resultate zur"uckbekommen. Um dies zu erreichen, kann man die Daten filtern. Der einfachste Weg, die Daten zu beschr"anken, ist es, nur die obersten
 n Datens"atze zu holen. Leider ist diese Klausel nicht standardisiert, und der Syntax ist in allen g"angigen Systemen anders (\lstinline{TOP} ins T-SQL, \lstinline{LIMIT} 
@@ -1073,7 +1073,7 @@ zwei Tracks hat. Erstelle eine Abfrage, welche die Alben-Ids aller Alben mit Bon
 \begin{itemize}
 \item Wir kennen die wichtigsten Aggregierungsfunktionen.
 \item Wir wissen, wie man das \lstinline{GROUP BY} "uber eine Tabelle einsetzt.
-\item Wir wissen, wie man das \lstinline{GROUP BY} "uber eine Tabelle einsetzt, und wie man die Probleme vermeiden kann, welche dabei
+\item Wir wissen, wie man das \lstinline{GROUP BY} "uber mehrere Tabellen einsetzt, und wie man die Probleme vermeiden kann, welche dabei
 auftreten k"onnen.
 \item Wir wissen, wie wir bei Gruppierungsabfragen vor der Gruppierung, und wie wir nach der Gruppierung filtern k"onnen.
  \end{itemize}
